@@ -12,3 +12,24 @@ CREATE TABLE public."shelterClient"
     "idRequest" bigint,
     "isAdopt" boolean
 );
+-- changeSet rickln: v1.2
+Create index shelterClient_idChat_idx on shelterClien (idChat);
+
+-- changeSet rickln: v1.3
+CREATE TABLE shelter_dog
+(
+    idDog     SERIAL NOT NULL PRIMARY KEY,
+    dogName   varchar(255) NOT NULL,
+    dogText   varchar(255),
+    isUsed    BOOLEAN
+);
+-- changeSet rickln: v1.3
+CREATE TABLE adopter_dog
+(
+    idUser  bigint NOT NULL  PRIMARY KEY,
+    idDog   bigint NOT NULL  PRIMARY KEY,
+    isChecked BOOLEAN,
+    isProblem BOOLEAN,
+    amountOfProbationDays INTEGER,
+    amountOfExtraDays INTEGER
+);
