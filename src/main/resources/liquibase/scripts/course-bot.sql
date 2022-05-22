@@ -1,14 +1,14 @@
 -- liquibase formatted sql
 
--- changeSet rickln: v1.0
-CREATE TABLE user
+-- changeSet rickln: v1.1
+CREATE TABLE public."shelterClient"
 (
-    idChat         BIGINT       NOT NULL PRIMARY KEY,
-    idUser         SERIAL       NOT NULL,
-    nameUserInChat VARCHAR(100) NOT NULL,
-    stamp          timestamp    NOT NULL,
-    emailUser      varchar(100),
-    phoneUser      varchar(20),
-    idRequest      bigint,
-    isAdopt        BOOLEAN
+    "idUser" serial NOT NULL PRIMARY KEY,
+    "idChat" bigint NOT NULL,
+    "nameUserInChat" varchar(255) NOT NULL,
+    stamp timestamp NOT NULL,
+    "emailUser" varchar(255),
+    "phoneUser" varchar(255),
+    "idRequest" bigint,
+    "isAdopt" boolean
 );

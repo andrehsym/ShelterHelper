@@ -14,7 +14,7 @@ import java.util.Objects;
  * и будет пригоден для использования в коде нашего приложения.
  **/
 @Entity
-public class User {
+public class ShelterClient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,7 @@ public class User {
     private Long idRequest;
     private boolean isAdopt;
 
-    public User(Long idUser, Long idChat, String nameUserInChat,  LocalDateTime stamp, String emailUser, String phoneUser, Long idRequest, boolean isAdopt) {
+    public ShelterClient(Long idUser, Long idChat, String nameUserInChat, LocalDateTime stamp, String emailUser, String phoneUser, Long idRequest, boolean isAdopt) {
         this.idUser = idUser;
         this.idChat = idChat;
         this.nameUserInChat = nameUserInChat;
@@ -38,7 +38,7 @@ public class User {
         this.isAdopt = isAdopt;
     }
 
-    public User() {
+    public ShelterClient() {
     }
 
     public Long getIdUser() {
@@ -109,8 +109,8 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return isAdopt == user.isAdopt && Objects.equals(idUser, user.idUser) && Objects.equals(idChat, user.idChat) && Objects.equals(nameUserInChat, user.nameUserInChat) && Objects.equals(stamp, user.stamp) && Objects.equals(emailUser, user.emailUser) && Objects.equals(phoneUser, user.phoneUser) && Objects.equals(idRequest, user.idRequest);
+        ShelterClient shelterClient = (ShelterClient) o;
+        return isAdopt == shelterClient.isAdopt && Objects.equals(idUser, shelterClient.idUser) && Objects.equals(idChat, shelterClient.idChat) && Objects.equals(nameUserInChat, shelterClient.nameUserInChat) && Objects.equals(stamp, shelterClient.stamp) && Objects.equals(emailUser, shelterClient.emailUser) && Objects.equals(phoneUser, shelterClient.phoneUser) && Objects.equals(idRequest, shelterClient.idRequest);
     }
 
     @Override
