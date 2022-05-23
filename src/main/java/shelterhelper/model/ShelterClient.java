@@ -8,10 +8,18 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
- * Создать сущность user
+ * Создать сущность ShelterClient
  * Цель задачи — получить класс с аннотацией @Entity,
  * который будет повторять структуру таблицу пользователей в БД
- * и будет пригоден для использования в коде нашего приложения.
+ *     private Long idUser;   идентификатор пользователя - ключ для связи с остальными БД
+ *     private Long idChat;   идентификатор чата
+ *     private String nameUserInChat;   имя пользователя в чате
+ *     private LocalDateTime stamp;
+ *     private String emailUser;
+ *     private String phoneUser;
+ *     private Long idRequest;         идентификатор последнего запроса
+ *     private boolean isAdopt;        является на данный момент усыновителем?
+ *
  **/
 @Entity
 public class ShelterClient {
@@ -116,5 +124,19 @@ public class ShelterClient {
     @Override
     public int hashCode() {
         return Objects.hash(idUser);
+    }
+
+    @Override
+    public String toString() {
+        return "ShelterClient{" +
+                "idUser=" + idUser +
+                ", idChat=" + idChat +
+                ", nameUserInChat='" + nameUserInChat + '\'' +
+                ", stamp=" + stamp +
+                ", emailUser='" + emailUser + '\'' +
+                ", phoneUser='" + phoneUser + '\'' +
+                ", idRequest=" + idRequest +
+                ", isAdopt=" + isAdopt +
+                '}';
     }
 }
