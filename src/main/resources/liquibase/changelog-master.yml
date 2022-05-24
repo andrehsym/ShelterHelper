@@ -1,3 +1,5 @@
 databaseChangeLog:
   - include:
       file: liquibase/scripts/course-bot.sql
+
+
