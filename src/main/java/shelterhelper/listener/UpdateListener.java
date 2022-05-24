@@ -13,23 +13,13 @@ import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.SendResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-//import shelterhelper.keyboards.InlineKeyboardsMaker;
+import org.springframework.stereotype.Service;
 
-////import org.telegram.telegrambots.ApiContextInitializer;
-//import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-////import org.telegram.telegrambots.meta.ApiContext;
-//import org.telegram.telegrambots.meta.TelegramBotsApi;
-//import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-//import org.telegram.telegrambots.meta.api.objects.Update;
-//import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-//import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-//import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
-//import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-//import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
-
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class UpdateListener implements UpdatesListener {
 
     private Logger logger = LoggerFactory.getLogger(UpdateListener.class);
@@ -39,38 +29,39 @@ public class UpdateListener implements UpdatesListener {
         this.telegramBot = telegramBot;
     }
 
+    @PostConstruct
+    public void init() {
+        telegramBot.setUpdatesListener(updates -> {
+            process(updates);
+            return UpdatesListener.CONFIRMED_UPDATES_ALL;
+        });
+    }
+
     @Override
     public int process(List<Update> updates) {
         updates.forEach(update -> {
             logger.info("Processing update: {}", update);
             if (update.message().text().equals("/start")) {
-                SendMessage messageText = new SendMessage(update.message().chat().id(),
-                        "Приветствуем в нашем виртуальном помощнике! " + "\nВыберите интересующий пункт:");
-                InlineKeyboardButton firstButton = new InlineKeyboardButton("Узнать информацию о приюте");
-                InlineKeyboardButton secondButton = new InlineKeyboardButton("Как взять собаку из приюта");
-                InlineKeyboardButton thirdButton = new InlineKeyboardButton("Прислать отчет о питомце ");
-                InlineKeyboardButton fourthButton = new InlineKeyboardButton("Позвать волонтера");
-                InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup(
-                        new InlineKeyboardButton[][]{{firstButton.callbackData("firstButton")},
-                                {secondButton.callbackData("secondButton")},
-                                {thirdButton.callbackData("thirdButton")},
-                                {fourthButton.callbackData("fourthButton")}});
-                messageText.replyMarkup(inlineKeyboard);
-                telegramBot.execute(messageText);
+                startMethod(update);
             }
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
 
-    public void startMessage(Update update) {
-
-
-//        SendMessage request = new SendMessage(update.message().chat().id(), "Привет! " +
-//                "\nЧтобы создать напоминание, напиши: " +
-//                "\nчисло.месяц.год точное:время текст напоминания" +
-//                "\nНапример:" +
-//                "\n05.01.2022 20:00 Сесть за домашнюю работу");
-//        SendResponse sendResponse = telegramBot.execute(request);
+    private void startMethod(Update update) {
+        SendMessage messageText = new SendMessage(update.message().chat().id(),
+                "Приветствуем в нашем виртуальном помощнике! " + "\nВыберите интересующий пункт:");
+        InlineKeyboardButton firstButton = new InlineKeyboardButton("Узнать информацию о приюте");
+        InlineKeyboardButton secondButton = new InlineKeyboardButton("Как взять собаку из приюта");
+        InlineKeyboardButton thirdButton = new InlineKeyboardButton("Прислать отчет о питомце ");
+        InlineKeyboardButton fourthButton = new InlineKeyboardButton("Позвать волонтера");
+        InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup(
+                new InlineKeyboardButton[][]{{firstButton.callbackData("firstButton")},
+                        {secondButton.callbackData("secondButton")},
+                        {thirdButton.callbackData("thirdButton")},
+                        {fourthButton.callbackData("fourthButton")}});
+        messageText.replyMarkup(inlineKeyboard);
+        telegramBot.execute(messageText);
     }
 
 }
