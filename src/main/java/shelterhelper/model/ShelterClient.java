@@ -1,9 +1,6 @@
 package shelterhelper.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -32,17 +29,18 @@ public class ShelterClient {
     private LocalDateTime stamp;
     private String emailUser;
     private String phoneUser;
-    private Long idRequest;
+    @Column(name = "id_question")
+    private Long idQuestion;
     private boolean isAdopt;
 
-    public ShelterClient(Long idUser, Long idChat, String nameUserInChat, LocalDateTime stamp, String emailUser, String phoneUser, Long idRequest, boolean isAdopt) {
+    public ShelterClient(Long idUser, Long idChat, String nameUserInChat, LocalDateTime stamp, String emailUser, String phoneUser, Long idQuestion, boolean isAdopt) {
         this.idUser = idUser;
         this.idChat = idChat;
         this.nameUserInChat = nameUserInChat;
         this.stamp = stamp;
         this.emailUser = emailUser;
         this.phoneUser = phoneUser;
-        this.idRequest = idRequest;
+        this.idQuestion = idQuestion;
         this.isAdopt = isAdopt;
     }
 
@@ -98,11 +96,11 @@ public class ShelterClient {
     }
 
     public Long getIdRequest() {
-        return idRequest;
+        return idQuestion;
     }
 
     public void setIdRequest(Long idRequest) {
-        this.idRequest = idRequest;
+        this.idQuestion = idRequest;
     }
 
     public boolean isAdopt() {
@@ -118,7 +116,7 @@ public class ShelterClient {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ShelterClient shelterClient = (ShelterClient) o;
-        return isAdopt == shelterClient.isAdopt && Objects.equals(idUser, shelterClient.idUser) && Objects.equals(idChat, shelterClient.idChat) && Objects.equals(nameUserInChat, shelterClient.nameUserInChat) && Objects.equals(stamp, shelterClient.stamp) && Objects.equals(emailUser, shelterClient.emailUser) && Objects.equals(phoneUser, shelterClient.phoneUser) && Objects.equals(idRequest, shelterClient.idRequest);
+        return isAdopt == shelterClient.isAdopt && Objects.equals(idUser, shelterClient.idUser) && Objects.equals(idChat, shelterClient.idChat) && Objects.equals(nameUserInChat, shelterClient.nameUserInChat) && Objects.equals(stamp, shelterClient.stamp) && Objects.equals(emailUser, shelterClient.emailUser) && Objects.equals(phoneUser, shelterClient.phoneUser) && Objects.equals(idQuestion, shelterClient.idQuestion);
     }
 
     @Override
@@ -135,7 +133,7 @@ public class ShelterClient {
                 ", stamp=" + stamp +
                 ", emailUser='" + emailUser + '\'' +
                 ", phoneUser='" + phoneUser + '\'' +
-                ", idRequest=" + idRequest +
+                ", idRequest=" + idQuestion +
                 ", isAdopt=" + isAdopt +
                 '}';
     }

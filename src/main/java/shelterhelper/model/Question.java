@@ -4,12 +4,13 @@ import javax.persistence.*;
 import java.util.Objects;
 
 /**
- private Long idUser;   идентификатор пользователя
- private Long idDog;    идентификатор  собаки
- private boolean isChecked; -  находится на испытательном сроке?
- private boolean isProblem; Не прошел испытательный срок
- private int amountOfProbationDays; Число основных дней испытательного срока ( по умолчанию 30)
- private int amountOfExtraDays; Число дополнительный дней
+ * сущность - вопросы. Вся текстовая инвормация, которая есть в распоряжении бота
+ * название пунктов меню как иерархия, в которой выбор пункта меня зависит от прошлого шага
+ private Long idQuestion;   идентификатор запроса - уникальный
+ private Long idParent;    идентификатор  родителя
+ private isList; -  является листом в иерархии ( нет потомков)?
+ private isNeedAnswer; на данный узел должен быть ответ клиента
+ private textQuestion; текст
  **/
 @Entity
 @Table(name = "question")
