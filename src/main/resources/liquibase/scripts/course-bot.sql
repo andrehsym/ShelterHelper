@@ -33,3 +33,15 @@ CREATE TABLE adopter_dog
     amountOfProbationDays INTEGER,
     amountOfExtraDays INTEGER
 );
+
+-- changeSet rickln: v1.11
+CREATE TABLE question
+(
+    id_question    bigint NOT NULL  PRIMARY KEY,
+    id_parent      bigint,
+    is_list        BOOLEAN,
+    is_need_answer BOOLEAN,
+    text_question varchar(255)
+);
+
+
