@@ -1,9 +1,6 @@
 package shelterhelper.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 /**
@@ -18,12 +15,18 @@ import java.util.Objects;
 public class AdopterDog {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
+    @Column(name = "id_user", unique = true)
     private Long idUser;
+    @Column(name = "id_dog", unique = true)
     private Long idDog;
+    @Column(name = "id_checked")
     private boolean isChecked;
+    @Column(name = "id_problem")
     private boolean isProblem;
+    @Column(name = "amount_of_probation_days")
     private int amountOfProbationDays;
+    @Column(name = "amount_of_extra_days")
     private int amountOfExtraDays;
 
     public AdopterDog(Long idUser, Long idDog, boolean isChecked, boolean isProblem, int amountOfProbationDays, int amountOfExtraDays) {

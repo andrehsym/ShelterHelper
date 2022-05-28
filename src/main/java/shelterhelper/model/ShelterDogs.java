@@ -1,30 +1,31 @@
 package shelterhelper.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.time.LocalDateTime;
+import javax.persistence.*;
 import java.util.Objects;
 
 /**
  * БД собак
- *     private Long idDog;    идентификатор
- *     private Long dogName;  имя
- *     private String dogText; описание
- *     private boolean isUsed;  ранее был усыновлен, но вернули назад
+ * private Long idDog;    идентификатор
+ * private Long dogName;  имя
+ * private String dogText; описание
+ * private boolean isUsed;  уже усыновлен
  */
 @Entity
+@Table(name = "shelter_dogs")
 public class ShelterDogs {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
+    @Column(name = "id_dog", unique = true)
     private Long idDog;
-    private Long dogName;
+    @Column(name = "dog_name")
+    private String dogName;
+    @Column(name = "dog_text")
     private String dogText;
+    @Column(name = "is_used")
     private boolean isUsed;
 
-    public ShelterDogs(Long idDog, Long dogName, String dogText, boolean isUsed) {
+    public ShelterDogs(Long idDog, String dogName, String dogText, boolean isUsed) {
         this.idDog = idDog;
         this.dogName = dogName;
         this.dogText = dogText;
@@ -42,11 +43,11 @@ public class ShelterDogs {
         this.idDog = idDog;
     }
 
-    public Long getDogName() {
+    public String getDogName() {
         return dogName;
     }
 
-    public void setDogName(Long dogName) {
+    public void setDogName(String dogName) {
         this.dogName = dogName;
     }
 
@@ -71,7 +72,7 @@ public class ShelterDogs {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ShelterDogs that = (ShelterDogs) o;
-        return isUsed == that.isUsed && Objects.equals(idDog, that.idDog) && Objects.equals(dogName, that.dogName) && Objects.equals(dogText, that.dogText);
+        return idDog.equals(that.idDog);
     }
 
     @Override

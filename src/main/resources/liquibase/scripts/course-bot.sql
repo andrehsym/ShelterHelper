@@ -15,23 +15,27 @@ CREATE TABLE public."shelterClient"
 -- changeSet rickln: v1.2
 CREATE INDEX shelterClient_idChat_idx ON shelterClien (idChat);
 
--- changeSet rickln: v1.3
+-- changeSet rickln: v1.15
 CREATE TABLE shelter_dog
 (
-    idDog   SERIAL       NOT NULL PRIMARY KEY,
-    dogName varchar(255) NOT NULL,
-    dogText varchar(255),
-    isUsed  BOOLEAN
+    id_dog   SERIAL       NOT NULL PRIMARY KEY,
+    dog_name varchar(255),
+    dog_text varchar(255),
+    is_used  BOOLEAN
 );
+-- При создании  автоматически is_used  BOOLEAN DEFAULT FALSE
+ALTER TABLE shelter_dog ALTER is_used SET DEFAULT FALSE;
+
 -- changeSet rickln: v1.3
 CREATE TABLE adopter_dog
 (
-    idUser                bigint NOT NULL PRIMARY KEY,
-    idDog                 bigint NOT NULL PRIMARY KEY,
-    isChecked             BOOLEAN,
-    isProblem             BOOLEAN,
-    amountOfProbationDays INTEGER,
-    amountOfExtraDays     INTEGER
+    id_user                  bigint NOT NULL PRIMARY KEY,
+    id_dog                   bigint NOT NULL PRIMARY KEY,
+    id_checked               BOOLEAN,
+    is_problem               BOOLEAN,
+    amount_of_probation_days INTEGER,
+    amount_of_extra_days     INTEGER
+
 );
 
 -- changeSet rickln: v1.11
