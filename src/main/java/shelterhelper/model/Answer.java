@@ -15,16 +15,18 @@ import java.util.Objects;
 @Table(name = "answer")
 public class Answer {
     @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+//    @GeneratedValue(generator = "system-uuid")
+//    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true)
-    private String id;
+    /** тип id заменил String на Long **/
+    private long id;
     @Column(name = "id_question")
-    private Long idQuestion;
+    private long idQuestion;
     @Column(name = "text_answer")
     private String textAnswer;
 
-    public Answer(String id, Long idQuestion, String textAnswer) {
+    public Answer(Long id, Long idQuestion, String textAnswer) {
         this.id = id;
         this.idQuestion = idQuestion;
         this.textAnswer = textAnswer;
@@ -33,19 +35,19 @@ public class Answer {
     public Answer() {
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public Long getIdQuestion() {
+    public long getIdQuestion() {
         return idQuestion;
     }
 
-    public void setIdQuestion(Long idQuestion) {
+    public void setIdQuestion(long idQuestion) {
         this.idQuestion = idQuestion;
     }
 
