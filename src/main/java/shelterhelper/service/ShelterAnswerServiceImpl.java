@@ -18,7 +18,8 @@ public class ShelterAnswerServiceImpl implements ShelterAnswerService {
     @Override
     public Answer editOrAddAnswer(Answer answer) {
         Long idQuestion = answer.getIdQuestion();
-        if (answerRepository.findAnswersByIdQuestion(idQuestion) == null) {
+        List<Answer> listAnswersByQuestion = answerRepository.findAnswersByIdQuestion(idQuestion);
+        if (listAnswersByQuestion.size() == 0) {
             return null;
         }
         return answerRepository.save(answer);
