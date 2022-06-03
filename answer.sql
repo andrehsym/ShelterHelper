@@ -5,3 +5,15 @@ INSERT INTO public.answer (id_question, text_answer) VALUES (7, 'Приют на
 INSERT INTO public.answer (id_question, text_answer) VALUES (7, 'Если вы хотите посетить наш приют, в частности, привезти собакам и кошкам корм, лекарства, наполнители и/или любую другую помощь, познакомиться с тем или иным питомцем, просим вас:');
 INSERT INTO public.answer (id_question, text_answer) VALUES (7, 'Звоните нам по телефонам указанным в разделе "Контактные данные для связи" и мы сообщим вам точный адрес приюта и как лучше добраться.');
 INSERT INTO public.answer (id_question, text_answer) VALUES (8, 'Общие рекомендации о технике безопасности на территории приюта.');
+INSERT INTO public.answer (id_question, text_answer) VALUES (9, 'Контактные данные для связи: 8 (916) 530-64-94 (Ирина); 8 (903) 973-03-59 (Татьяна Никандровна); 8 (977) 724 30 82 Пётр Николаевич; Кошки: 8 (916) 210-10-44 (Виктория).');
+INSERT INTO public.answer (id_question, text_answer) VALUES (11, 'Правила знакомства с собакой - Вы приезжаете в приют и знакомитесь с уже выбранным на сайте животным (каталоги "Суки", "Кобели" и "Щенки") или выбираете на месте.');
+INSERT INTO public.answer (id_question, text_answer) VALUES (12, 'Если Вы приняли решение взять питомца, тогда звоните волонтеру понравившейся собаки и приезжаете к нам, имея на руках паспорт. Заполняется договор передачи.');
+INSERT INTO public.answer (id_question, text_answer) VALUES (12, 'Мы проверяем серьезность Ваших намерений, задаем вопросы. У нас есть критерии к людям, забирающим пса. Отдаем только в хорошие руки.');
+INSERT INTO public.answer (id_question, text_answer) VALUES (13, 'Список рекомендаций по транспортировке животного. Волонтер вместе с Вами, чтобы у собаки не было стресса, отвозит животное к Вам домой. Помогает помыть ее и освоиться на новом месте.');
+INSERT INTO public.answer (id_question, text_answer) VALUES (14, 'Список рекомендаций по обустройству дома для щенка.');
+INSERT INTO public.answer (id_question, text_answer) VALUES (15, 'Список рекомендаций по обустройству дома для взрослой собаки.');
+INSERT INTO public.answer (id_question, text_answer) VALUES (16, 'Список рекомендаций по обустройству дома для собаки с ограниченными возможностями.');
+INSERT INTO public.answer (id_question, text_answer) VALUES (17, 'Советы кинолога по первичному общению с собакой.');
+INSERT INTO public.answer (id_question, text_answer) VALUES (18, 'Рекомендации по проверенным кинологам. Ниже указанны координаты и опыт работы кинологов, к которым мы рекомендуем обращаться:');
+INSERT INTO public.answer (id_question, text_answer) VALUES (18, 'Кинолог с опытом работы 10 лет. Иванов Иван Иванович. e-mail: ivanov@yandex.ru');
+INSERT INTO public.answer (id_question, text_answer) VALUES (19, 'Список причин отказа в заборе собаки из приюта.');
