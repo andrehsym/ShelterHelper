@@ -1,6 +1,7 @@
 package shelterhelper.service;
 
 import org.springframework.stereotype.Service;
+import shelterhelper.excepton.IdNotFoundException;
 import shelterhelper.model.Answer;
 import shelterhelper.repository.AnswerRepository;
 
@@ -18,7 +19,7 @@ public class ShelterAnswerServiceImpl implements ShelterAnswerService {
     @Override
     public Answer editOrAddAnswer(Answer answer) {
         Long idQuestion = answer.getIdQuestion();
-        List<Answer> listAnswersByQuestion = answerRepository.findAnswersByIdQuestion(idQuestion);
+        List<Answer> listAnswersByQuestion = answerRepository.findAnswersByIdQuestionOrderById(idQuestion);
         if (listAnswersByQuestion.size() == 0) {
             return null;
         }
@@ -27,17 +28,18 @@ public class ShelterAnswerServiceImpl implements ShelterAnswerService {
 
     @Override
     public List<Answer> getAnswersAll() {
-        return answerRepository.findAll();
+        return answerRepository.findAllByOrderByIdQuestionAscIdAsc();
     }
 
     @Override
     public List<Answer> getAnswersByQuestion(Long id_question) {
-        return answerRepository.findAnswersByIdQuestion(id_question);
+        return answerRepository.findAnswersByIdQuestionOrderById(id_question);
     }
 
     @Override
     public Answer getAnswerById(Long id) {
-        return answerRepository.getById(id);
+        return answerRepository.findById(id).
+                orElseThrow(() -> new IdNotFoundException("Информация по идентификатору не найдена" + id));
     }
 
     @Override

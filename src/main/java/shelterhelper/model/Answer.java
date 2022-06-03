@@ -1,7 +1,6 @@
 package shelterhelper.model;
 
-import org.hibernate.annotations.GenericGenerator;
-
+//import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -11,6 +10,7 @@ import java.util.Objects;
  * private Long idQuestion;   идентификатор запроса - уникальный
  * private textAnswer; текст ответа, который будет доступен для редактирования пользователю
  **/
+//@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity
 @Table(name = "answer")
 public class Answer {
@@ -20,9 +20,9 @@ public class Answer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true)
     /** тип id заменил String на Long **/
-    private long id;
+    private Long id;
     @Column(name = "id_question")
-    private long idQuestion;
+    private Long idQuestion;
     @Column(name = "text_answer")
     private String textAnswer;
 

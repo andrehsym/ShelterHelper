@@ -69,11 +69,8 @@ public class ShelterAnswerController {
      * GET http://localhost:8080/answer/byId/{id}
      **/
     @GetMapping("/byId/{id}")
-    public ResponseEntity<Answer> getAnswerById(@PathVariable Long id) {
+    public ResponseEntity<Answer> getAnswerById(@PathVariable long id) {
         Answer answer = shelterAnswerService.getAnswerById(id);
-        if (answer == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ok(answer);
     }
 
