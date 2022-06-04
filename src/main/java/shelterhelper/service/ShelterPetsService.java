@@ -1,6 +1,6 @@
 package shelterhelper.service;
 
-import shelterhelper.model.ShelterDogs;
+import shelterhelper.model.ShelterPets;
 
 import java.util.Collection;
 
@@ -15,14 +15,15 @@ import java.util.Collection;
  */
 
 public interface ShelterPetsService {
-    ShelterDogs addPet(ShelterDogs pet);
-    ShelterDogs getPet(Long id);
+    ShelterPets addPet(ShelterPets pet);
+    ShelterPets getPet(Long id);
 
-    Collection<ShelterDogs> getAllPets();
-    Collection<ShelterDogs> getAdoptedPets();
-    Collection<ShelterDogs> getCheckingPets();
+    Collection<ShelterPets> getAllPets();
+    Collection<ShelterPets> getAdoptedPets();
+    Collection<ShelterPets> getCheckingDogs();
+    Collection<ShelterPets> getCheckingCats();
 
-    ShelterDogs setPet(Long id);
+    ShelterPets setPet(Long id);
 
     boolean removePet(Long id);
 }

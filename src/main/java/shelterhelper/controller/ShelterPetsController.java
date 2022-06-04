@@ -1,7 +1,7 @@
 package shelterhelper.controller;
 
 import org.springframework.web.bind.annotation.*;
-import shelterhelper.model.ShelterDogs;
+import shelterhelper.model.ShelterPets;
 import shelterhelper.service.ShelterPetsService;
 
 import java.util.Collection;
@@ -11,7 +11,7 @@ import java.util.Collection;
  * используя все правила формирования REST-запросов: GET-методы для получения данных, POST— для создания…
  */
 @RestController
-@RequestMapping("/dogs")
+@RequestMapping("/pets")
 public class ShelterPetsController {
     private final ShelterPetsService shelterPetsService;
 
@@ -20,25 +20,17 @@ public class ShelterPetsController {
     }
 
     /**
-     * POST http://localhost:8080/dogs
+     * POST http://localhost:8080/pets
      */
     @PostMapping
-    public ShelterDogs createPet(@RequestBody ShelterDogs pet) {
+    public ShelterPets createPet(@RequestBody ShelterPets pet) {
         return shelterPetsService.addPet(pet);
     }
 
-    /**
-     * найти по идентификатору
-     * GET http://localhost:8080/dog/1
-     */
-    @GetMapping("{id}")
-    public ShelterDogs getPet(@PathVariable long id) {
-        return shelterPetsService.getPet(id);
-    }
 
     /**
      * Удалить  по идентификатору
-     * DELETE  http://localhost:8080/dog/2
+     * DELETE  http://localhost:8080/pets/2
      * если удаление прошло успешно - TRUE
      */
     @DeleteMapping("{id}")
@@ -53,13 +45,9 @@ public class ShelterPetsController {
      * если задан критерий - показать показать всех на испытательном сроке
      */
     @GetMapping
-    public Collection<ShelterDogs> getallDogs(@RequestParam(required = false) boolean is_used,
-                                              @RequestParam(required = false) boolean is_checked) {
+    public Collection<ShelterPets> getallDogs(@RequestParam(required = false) boolean is_used) {
         if (is_used) {
             return shelterPetsService.getAdoptedPets();
-        }
-        if (is_checked) {
-            return shelterPetsService.getCheckingPets();
         }
         return shelterPetsService.getAllPets();
     }
