@@ -1,23 +1,29 @@
-INSERT INTO public.question (id_question, id_parent, is_list, is_need_answer, text_question) VALUES (01, 00, FALSE, FALSE, '<b>Приветствуем в нашем виртуальном помощнике!</b>  Выберите интересующий пункт:');
-INSERT INTO public.question (id_question, id_parent, is_list, is_need_answer, text_question) VALUES (02, 01, FALSE, FALSE, 'Узнать информацию о приют');
-INSERT INTO public.question (id_question, id_parent, is_list, is_need_answer, text_question) VALUES (03, 01, FALSE, FALSE, 'Как взять собаку из приюта');
-INSERT INTO public.question (id_question, id_parent, is_list, is_need_answer, text_question) VALUES (04, 01, TRUE,  TRUE,  'Прислать отчет о питомце:');
-INSERT INTO public.question (id_question, id_parent, is_list, is_need_answer, text_question) VALUES (05, 01, TRUE,  FALSE, 'Позвать волонтера');
-INSERT INTO public.question (id_question, id_parent, is_list, is_need_answer, text_question) VALUES (06, 02, TRUE,  FALSE, 'Наш приют');
-INSERT INTO public.question (id_question, id_parent, is_list, is_need_answer, text_question) VALUES (07, 02, TRUE,  FALSE,  'Расписание работы приюта, адрес, схемf проезда');
-INSERT INTO public.question (id_question, id_parent, is_list, is_need_answer, text_question) VALUES (08, 02, TRUE,  FALSE, 'Общие рекомендации о технике безопасности на территории приюта');
-INSERT INTO public.question (id_question, id_parent, is_list, is_need_answer, text_question) VALUES (09, 02, TRUE,  TRUE,  'Координаты приюта');
-INSERT INTO public.question (id_question, id_parent, is_list, is_need_answer, text_question) VALUES (10, 02, TRUE,  FALSE, 'Позвать волонтера');
-INSERT INTO public.question (id_question, id_parent, is_list, is_need_answer, text_question) VALUES (11, 03, TRUE,  FALSE, 'Правила знакомства с собакой');
-INSERT INTO public.question (id_question, id_parent, is_list, is_need_answer, text_question) VALUES (12, 03, TRUE,  FALSE, 'Последовательность действий и список необходимых документов');
-INSERT INTO public.question (id_question, id_parent, is_list, is_need_answer, text_question) VALUES (13, 03, TRUE,  FALSE, 'Список рекомендаций по транспортировке животного' );
-INSERT INTO public.question (id_question, id_parent, is_list, is_need_answer, text_question) VALUES (14, 03, TRUE,  FALSE, 'Список рекомендаций по обустройству дома для щенка');
-INSERT INTO public.question (id_question, id_parent, is_list, is_need_answer, text_question) VALUES (15, 03, TRUE,  FALSE, 'Список рекомендаций по обустройству дома для взрослой собаки' );
-INSERT INTO public.question (id_question, id_parent, is_list, is_need_answer, text_question) VALUES (16, 03, TRUE,  FALSE, 'Список рекомендаций по обустройству дома для собаки с ограниченными возможностями');
-INSERT INTO public.question (id_question, id_parent, is_list, is_need_answer, text_question) VALUES (17, 03, TRUE,  FALSE, 'Советы кинолога по первичному общению с собакой');
-INSERT INTO public.question (id_question, id_parent, is_list, is_need_answer, text_question) VALUES (18, 03, TRUE,  FALSE, 'Рекомендации по проверенным кинологам ');
-INSERT INTO public.question (id_question, id_parent, is_list, is_need_answer, text_question) VALUES (19, 03, TRUE,  FALSE, 'Список причин отказа в заборе собаки из приюта');
-INSERT INTO public.question (id_question, id_parent, is_list, is_need_answer, text_question) VALUES (20, 03, TRUE,  TRUE,  'Контактные данные для связи');
-INSERT INTO public.question (id_question, id_parent, is_list, is_need_answer, text_question) VALUES (21, 03, TRUE,  FALSE, 'Позвать волонтера');
+﻿INSERT INTO question (id_question, id_parent, is_list, is_need_answer, id_entity, text_question)
+VALUES (01, 00, FALSE, FALSE, 'DEFAULT',
+        '<b>Приветствуем в нашем виртуальном помощнике!</b>  Выберите интересующий пункт:'),
+       (02, 01, FALSE, FALSE, 'DEFAULT', 'Приют для кошек'),
+       (03, 01, FALSE, FALSE, 'DEFAULT', 'Приют для собак'),
+       (04, 02, FALSE, FALSE, 'DEFAULT', 'Узнать информацию о приюте'),
+       (05, 02, FALSE, FALSE, 'DEFAULT', 'Как взять животное из приюта'),
+       (06, 02, TRUE, TRUE, 'DEFAULT', 'Прислать отчет о питомце:'),
+       (07, 02, TRUE, FALSE, 'DEFAULT', 'Позвать волонтера'),
+       (08, 03, TRUE, FALSE, 'DEFAULT', 'Наш приют. Рассказ о приюте'),
+       (09, 03, TRUE, FALSE, 'DEFAULT', 'Расписание работы приюта, адрес, схема проезда'),
+       (10, 03, TRUE, FALSE, 'DEFAULT', 'Контактные данные охраны для оформления пропуска на машину.'),
+       (11, 03, TRUE, FALSE, 'DEFAULT', 'Общие рекомендации о технике безопасности на территории приюта'),
+       (12, 03, TRUE, TRUE, 'DEFAULT', 'Контактные данные клиента для связи'),
+       (13, 03, TRUE, FALSE, 'DEFAULT', 'Позвать волонтера'),
+       (14, 04, TRUE, FALSE, 'DEFAULT', 'Правила знакомства с животным до того, как забрать его из приюта'),
+       (15, 04, TRUE, FALSE, 'DEFAULT', 'Список необходимых документов'),
+       (16, 04, TRUE, FALSE, 'DEFAULT', 'Список рекомендаций по транспортировке животного'),
+       (17, 04, TRUE, FALSE, 'DEFAULT', 'Список рекомендаций по обустройству дома для щенка/котенка'),
+       (18, 04, TRUE, FALSE, 'DEFAULT', 'Список рекомендаций по обустройству дома для взрослого животного'),
+       (19, 04, TRUE, FALSE, 'DEFAULT',
+        'Список рекомендаций по обустройству дома для животного с ограниченными возможностями'),
+       (20, 04, TRUE, FALSE, 'DOG', 'Советы кинолога по первичному общению с собакой'),
+       (21, 04, TRUE, FALSE, 'DOG', 'Рекомендации по проверенным кинологам '),
+       (22, 04, TRUE, FALSE, 'DEFAULT', 'Список причин отказа в заборе животного из приюта'),
+       (23, 04, TRUE, TRUE, 'DEFAULT', 'Контактные данные для связи'),
+       (24, 04, TRUE, FALSE, 'DEFAULT', 'Позвать волонтера');
 
 
