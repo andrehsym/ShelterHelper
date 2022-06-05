@@ -20,9 +20,9 @@ public class ShelterPets {
     @GeneratedValue
     @Column(name = "id_pet", unique = true)
     private Long idPet;
-    @Column(name = "id_entity")
-    @Enumerated(EnumType.STRING)
-    private ShelterEntity shelterEntity;
+    @ManyToOne
+    @JoinColumn(name = "id_entity")
+    private ShelterObject idEntity;
     @Column(name = "pet_name")
     private String petName;
     @Column(name = "pet_text")
@@ -30,9 +30,9 @@ public class ShelterPets {
     @Column(name = "is_used")
     private boolean isUsed;
 
-    public ShelterPets(Long idPet, ShelterEntity shelterEntity, String petName, String petText, boolean isUsed) {
+    public ShelterPets(Long idPet, ShelterObject idEntity, String petName, String petText, boolean isUsed) {
         this.idPet = idPet;
-        this.shelterEntity = shelterEntity;
+        this.idEntity = idEntity;
         this.petName = petName;
         this.petText = petText;
         this.isUsed = isUsed;
@@ -49,12 +49,12 @@ public class ShelterPets {
         this.idPet = idDog;
     }
 
-    public ShelterEntity getShelterEntity() {
-        return shelterEntity;
+    public ShelterObject getIdEntity() {
+        return idEntity;
     }
 
-    public void setShelterEntity(ShelterEntity shelterEntity) {
-        this.shelterEntity = shelterEntity;
+    public void setIdEntity(ShelterObject idEntity) {
+        this.idEntity = idEntity;
     }
 
     public String getPetName() {
@@ -98,7 +98,7 @@ public class ShelterPets {
     public String toString() {
         return "ShelterPets{" +
                 "idPet=" + idPet +
-                ", shelterEntity=" + shelterEntity +
+                ", shelterEntity=" + idEntity +
                 ", petName='" + petName + '\'' +
                 ", petText='" + petText + '\'' +
                 ", isUsed=" + isUsed +

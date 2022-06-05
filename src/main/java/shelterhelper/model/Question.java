@@ -24,9 +24,9 @@ public class Question {
     private Long idQuestion;
     @Column(name = "id_parent")
     private Long idParent;
-    @Column(name = "id_entity")
-    @Enumerated(EnumType.STRING)
-    private ShelterEntity shelterEntity;
+    @ManyToOne
+    @JoinColumn(name = "id_entity")
+    private ShelterObject idEntity;
     @Column(name = "is_list")
     private boolean isList;
     @Column(name = "is_need_answer")
@@ -34,10 +34,10 @@ public class Question {
     @Column(name = "text_question")
     private String textQuestion;
 
-    public Question(Long idQuestion, Long idParent, ShelterEntity shelterEntity, boolean isList, boolean isNeedAnswer, String textQuestion) {
+    public Question(Long idQuestion, Long idParent, ShelterObject idEntity, boolean isList, boolean isNeedAnswer, String textQuestion) {
         this.idQuestion = idQuestion;
         this.idParent = idParent;
-        this.shelterEntity = shelterEntity;
+        this.idEntity = idEntity;
         this.isList = isList;
         this.isNeedAnswer = isNeedAnswer;
         this.textQuestion = textQuestion;
@@ -86,12 +86,12 @@ public class Question {
         isNeedAnswer = list;
     }
 
-    public ShelterEntity getShelterEntity() {
-        return shelterEntity;
+    public ShelterObject getIdEntity() {
+        return idEntity;
     }
 
-    public void setShelterEntity(ShelterEntity shelterEntity) {
-        this.shelterEntity = shelterEntity;
+    public void setIdEntity(ShelterObject idEntity) {
+        this.idEntity = idEntity;
     }
 
     @Override
@@ -112,7 +112,7 @@ public class Question {
         return "Question{" +
                 "idQuestion=" + idQuestion +
                 ", idParent=" + idParent +
-                ", shelterEntity=" + shelterEntity +
+                ", shelterEntity=" + idEntity +
                 ", isList=" + isList +
                 ", isNeedAnswer=" + isNeedAnswer +
                 ", textQuestion='" + textQuestion + '\'' +

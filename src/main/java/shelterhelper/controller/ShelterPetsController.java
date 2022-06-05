@@ -45,9 +45,13 @@ public class ShelterPetsController {
      * если задан критерий - показать показать всех на испытательном сроке
      */
     @GetMapping
-    public Collection<ShelterPets> getallDogs(@RequestParam(required = false) boolean is_used) {
-        if (is_used) {
-            return shelterPetsService.getAdoptedPets();
+    public Collection<ShelterPets> getAllDogs (@RequestParam(required = false) boolean only_cat,
+                                               @RequestParam(required = false) boolean only_dog){
+        if (only_cat) {
+            return shelterPetsService.getAllCats();
+        }
+        if (only_dog) {
+            return shelterPetsService.getAllDogs();
         }
         return shelterPetsService.getAllPets();
     }
