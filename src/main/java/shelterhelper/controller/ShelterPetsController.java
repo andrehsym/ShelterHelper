@@ -27,7 +27,6 @@ public class ShelterPetsController {
         return shelterPetsService.addPet(pet);
     }
 
-
     /**
      * Удалить  по идентификатору
      * DELETE  http://localhost:8080/pets/2
@@ -41,12 +40,12 @@ public class ShelterPetsController {
     /**
      * общий справочный запрос
      * если критерии не заданы- показать всех
-     * если задан критерий - показать показать только усыновленных
-     * если задан критерий - показать показать всех на испытательном сроке
+     * если задан критерий - показать  только кошек
+     * если задан критерий - показать только собак
      */
     @GetMapping
-    public Collection<ShelterPets> getAllDogs (@RequestParam(required = false) boolean only_cat,
-                                               @RequestParam(required = false) boolean only_dog){
+    public Collection<ShelterPets> getAllPets(@RequestParam(required = false) boolean only_cat,
+                                              @RequestParam(required = false) boolean only_dog) {
         if (only_cat) {
             return shelterPetsService.getAllCats();
         }
@@ -55,4 +54,21 @@ public class ShelterPetsController {
         }
         return shelterPetsService.getAllPets();
     }
+
+    /**
+     * общий справочный запрос по идентификатору
+     * если критерии не заданы- показать всех
+     */
+    @GetMapping("{id}")
+    public ShelterPets getPetById(@PathVariable long id) {
+        return shelterPetsService.getPet(id);
+    }
+    /**
+     * PUT http://localhost:8080/student
+     */
+    @PutMapping
+    public ShelterPets updateStudent(@RequestBody Long id) {
+        return shelterPetsService.setPet(id);
+    }
+
 }
