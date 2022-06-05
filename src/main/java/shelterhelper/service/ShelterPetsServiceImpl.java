@@ -7,18 +7,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import shelterhelper.excepton.IdNotFoundException;
-import shelterhelper.model.ShelterDogs;
-import shelterhelper.repository.ShelterDogsRepository;
+import shelterhelper.model.ShelterPets;
+import shelterhelper.repository.ShelterPetsRepository;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Service
 public class ShelterPetsServiceImpl implements ShelterPetsService {
     private final Logger logger = LoggerFactory.getLogger(ShelterPetsServiceImpl.class);
-    private final ShelterDogsRepository shelterDogsRepository;
+    private final ShelterPetsRepository shelterPetsRepository;
 
-    public ShelterPetsServiceImpl(ShelterDogsRepository shelterDogsRepository) {
-        this.shelterDogsRepository = shelterDogsRepository;
+    public ShelterPetsServiceImpl(ShelterPetsRepository shelterPetsRepository) {
+        this.shelterPetsRepository = shelterPetsRepository;
     }
 
     /**
@@ -28,8 +29,8 @@ public class ShelterPetsServiceImpl implements ShelterPetsService {
      * @return одна запись для добавления
      */
     @Override
-    public ShelterDogs addPet(ShelterDogs pet) {
-        return shelterDogsRepository.save(pet);
+    public ShelterPets addPet(ShelterPets pet) {
+        return shelterPetsRepository.save(pet);
     }
 
     /**
@@ -40,9 +41,9 @@ public class ShelterPetsServiceImpl implements ShelterPetsService {
      * @return объект класса
      */
     @Override
-    public ShelterDogs getPet(Long id) {
+    public ShelterPets getPet(Long id) {
         logger.info("Method was called - getPet");
-        return shelterDogsRepository.findById(id)
+        return shelterPetsRepository.findById(id)
                 .orElseThrow(() -> new IdNotFoundException("Информация по идентификатору не найдена" + id));
 
     }
@@ -50,12 +51,12 @@ public class ShelterPetsServiceImpl implements ShelterPetsService {
     /**
      * показать полный список БД
      *
-     * @return Collection<ShelterDogs>
+     * @return Collection<ShelterPets>
      */
     @Override
-    public Collection<ShelterDogs> getAllPets() {
+    public Collection<ShelterPets> getAllPets() {
         logger.info("Method was called - getAllPets");
-        Collection<ShelterDogs> shelterDogs = shelterDogsRepository.findAll();
+        Collection<ShelterPets> shelterDogs = shelterPetsRepository.findAll();
         if (shelterDogs.size() == 0) {
             logger.warn("Method was stopped - getAllPets");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -68,9 +69,9 @@ public class ShelterPetsServiceImpl implements ShelterPetsService {
      * критерии - нвходятсяв текущей БД и is_used = true
      */
     @Override
-    public Collection<ShelterDogs> getAdoptedPets() {
+    public Collection<ShelterPets> getAdoptedPets() {
         logger.info("Method was called - getAdoptedPets");
-        Collection<ShelterDogs> shelterDogs = shelterDogsRepository.getAdoptedPets();
+        Collection<ShelterPets> shelterDogs = shelterPetsRepository.getAdoptedPets();
         if (shelterDogs.size() == 0) {
             logger.warn("Method was stopped - getAdoptedPets");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -84,9 +85,20 @@ public class ShelterPetsServiceImpl implements ShelterPetsService {
      * нвходятся в БД adopted_dog + is_checking = true
      */
     @Override
-    public Collection<ShelterDogs> getCheckingPets() {
+    public Collection<ShelterPets> getCheckingDogs() {
         logger.info("Method was called - getCheckingPets");
-        Collection<ShelterDogs> shelterDogs = shelterDogsRepository.getCheckingPets();
+        Collection<ShelterPets> shelterDogs = shelterPetsRepository.getCheckingDogs();
+        if (shelterDogs.size() == 0) {
+            logger.warn("Method was stopped - getCheckingPets");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        return shelterDogs;
+    }
+
+    @Override
+    public Collection<ShelterPets> getCheckingCats() {
+        logger.info("Method was called - getCheckingPets");
+        Collection<ShelterPets> shelterDogs = shelterPetsRepository.getCheckingCats();
         if (shelterDogs.size() == 0) {
             logger.warn("Method was stopped - getCheckingPets");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -101,9 +113,9 @@ public class ShelterPetsServiceImpl implements ShelterPetsService {
      * @return экземпляр класса
      */
     @Override
-    public ShelterDogs setPet(Long id) {
-        ShelterDogs shelterDogs = getPet(id);
-        return shelterDogsRepository.save(shelterDogs);
+    public ShelterPets setPet(Long id) {
+        ShelterPets shelterPets = getPet(id);
+        return shelterPetsRepository.save(shelterPets);
     }
 
     /**
@@ -115,11 +127,29 @@ public class ShelterPetsServiceImpl implements ShelterPetsService {
     @Override
     public boolean removePet(Long id) {
         try {
-            shelterDogsRepository.deleteById(id);
+            shelterPetsRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             logger.warn(id + e.getMessage());
             return false;
         }
         return true;
+    }
+
+    @Override
+    public Collection<ShelterPets> getAllCats() {
+    //    return shelterPetsRepository.findAll()
+    //            .stream()
+    //            .filter(p -> p.getIdEntity().getIdEntity() == 1L
+    //
+        return null;
+    }
+
+    @Override
+    public Collection<ShelterPets> getAllDogs() {
+        //return shelterPetsRepository.findAll()
+        //        .stream()
+        //        .filter(p -> p.getShelterEntity(). == ShelterEntity.DOG)
+        //        .collect(Collectors.toList());
+        return null;
     }
 }

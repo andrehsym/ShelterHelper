@@ -13,45 +13,64 @@ CREATE TABLE public."shelterClient"
     "isAdopt"        boolean
 );
 -- changeSet rickln: v1.2
-CREATE INDEX shelterClient_idChat_idx ON shelterClien (idChat);
+CREATE INDEX shelterClient_idChat_idx ON shelterClient (idChat);
 
--- changeSet rickln: v1.15
-CREATE TABLE shelter_dog
+-- changeSet rickln: v2.5
+CREATE TABLE shelter_pets
 (
-    id_dog   SERIAL       NOT NULL PRIMARY KEY,
-    dog_name varchar(255),
-    dog_text varchar(255),
-    is_used  BOOLEAN
+    id_pet      SERIAL  NOT NULL PRIMARY KEY,
+    id_entity   INT  NOT NULL,
+    pet_name    varchar(255),
+    pet_text    varchar(255),
+    is_used      BOOLEAN
 );
 -- При создании  автоматически is_used  BOOLEAN DEFAULT FALSE
-ALTER TABLE shelter_dog ALTER is_used SET DEFAULT FALSE;
+ALTER TABLE shelter_pets ALTER is_used   SET DEFAULT FALSE;
 
--- changeSet rickln: v1.3
-CREATE TABLE adopter_dog
+-- changeSet rickln: v1.31
+CREATE TABLE adopter_dogs
 (
     id_user                  bigint NOT NULL PRIMARY KEY,
-    id_dog                   bigint NOT NULL PRIMARY KEY,
+    id_pet                   bigint NOT NULL PRIMARY KEY,
     id_checked               BOOLEAN,
     is_problem               BOOLEAN,
     amount_of_probation_days INTEGER,
     amount_of_extra_days     INTEGER
 
 );
+-- changeSet rickln: v1.31
+CREATE TABLE adopter_cats
+(
+    id_user                  bigint NOT NULL PRIMARY KEY,
+    id_pet                   bigint NOT NULL PRIMARY KEY,
+    id_checked               BOOLEAN,
+    is_problem               BOOLEAN,
+    amount_of_probation_days INTEGER,
+    amount_of_extra_days     INTEGER
 
--- changeSet rickln: v1.11
+);
+-- changeSet rickln: v2.11
 CREATE TABLE question
 (
     id_question    bigint NOT NULL PRIMARY KEY,
     id_parent      bigint,
+    id_entity      INT  NOT NULL,
     is_list        BOOLEAN,
     is_need_answer BOOLEAN,
     text_question  varchar(255)
 );
-
+ALTER TABLE squestion ALTER id_entity SET DEFAULT '1';
 -- changeSet rickln: v1.13
 CREATE TABLE answer
 (
     id          bigint NOT NULL PRIMARY KEY,
     id_question bigint NOT NULL,
     text_answer varchar(255)
+);
+
+-- changeSet rickln: v1.16
+CREATE TABLE shelter_entity
+(
+    id_entity   INT NOT NULL PRIMARY KEY,
+    text_entity varchar(50)
 );

@@ -4,41 +4,46 @@ import javax.persistence.*;
 import java.util.Objects;
 
 /**
- private Long idUser;   идентификатор пользователя
- private Long idDog;    идентификатор  собаки
- private boolean isChecked; -  находится на испытательном сроке?
- private boolean isProblem; Не прошел испытательный срок
- private int amountOfProbationDays; Число основных дней испытательного срока ( по умолчанию 30)
- private int amountOfExtraDays; Число дополнительный дней
-**/
+ * сущность таблицы усыновителей
+ * создана для кошек - собаки далее наследуют
+ * idUser - идентификатор пользователя
+ * idPet   -идентификатор животного ( одна таблица ShelterPets!)
+ * isChecked  - наиспытательном сроке
+ * isProblem  - не прошел проверку
+ * amountOfProbationDays - число дней испытательного срока
+ * amountOfExtraDays     - число дополнительных дней
+ */
 @Entity
-public class AdopterDog {
-
+@Inheritance(
+        strategy = InheritanceType.TABLE_PER_CLASS
+)
+@Table(name = "adopter_cats")
+public class AdopterCats {
     @Id
     @GeneratedValue
     @Column(name = "id_user", unique = true)
-    private Long idUser;
-    @Column(name = "id_dog", unique = true)
-    private Long idDog;
+    public Long idUser;
+    @Column(name = "id_pet", unique = true)
+    public Long idPet;
     @Column(name = "id_checked")
-    private boolean isChecked;
+    public boolean isChecked;
     @Column(name = "id_problem")
-    private boolean isProblem;
+    public boolean isProblem;
     @Column(name = "amount_of_probation_days")
-    private int amountOfProbationDays;
+    public int amountOfProbationDays;
     @Column(name = "amount_of_extra_days")
-    private int amountOfExtraDays;
+    public int amountOfExtraDays;
 
-    public AdopterDog(Long idUser, Long idDog, boolean isChecked, boolean isProblem, int amountOfProbationDays, int amountOfExtraDays) {
+    public AdopterCats(Long idUser, Long idPet, boolean isChecked, boolean isProblem, int amountOfProbationDays, int amountOfExtraDays) {
         this.idUser = idUser;
-        this.idDog = idDog;
+        this.idPet = idPet;
         this.isChecked = isChecked;
         this.isProblem = isProblem;
         this.amountOfProbationDays = amountOfProbationDays;
         this.amountOfExtraDays = amountOfExtraDays;
     }
 
-    public AdopterDog() {
+    public AdopterCats() {
     }
 
     public Long getIdUser() {
@@ -49,12 +54,12 @@ public class AdopterDog {
         this.idUser = idUser;
     }
 
-    public Long getIdDog() {
-        return idDog;
+    public Long getIdPet() {
+        return idPet;
     }
 
-    public void setIdDog(Long idDog) {
-        this.idDog = idDog;
+    public void setIdPet(Long idDog) {
+        this.idPet = idDog;
     }
 
     public boolean isChecked() {
@@ -93,20 +98,20 @@ public class AdopterDog {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AdopterDog that = (AdopterDog) o;
-        return Objects.equals(idUser, that.idUser) && Objects.equals(idDog, that.idDog);
+        AdopterDogs that = (AdopterDogs) o;
+        return Objects.equals(idUser, that.idUser) && Objects.equals(idPet, that.idPet);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idUser, idDog);
+        return Objects.hash(idUser, idPet);
     }
 
     @Override
     public String toString() {
-        return "AdopterDog{" +
+        return "AdopterCats{" +
                 "idUser=" + idUser +
-                ", idDog=" + idDog +
+                ", idDog=" + idPet +
                 ", isChecked=" + isChecked +
                 ", isProblem=" + isProblem +
                 ", amountOfProbationDays=" + amountOfProbationDays +

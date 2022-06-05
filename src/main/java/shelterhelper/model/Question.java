@@ -6,11 +6,13 @@ import java.util.Objects;
 /**
  * сущность - вопросы. Вся текстовая инвормация, которая есть в распоряжении бота
  * название пунктов меню как иерархия, в которой выбор пункта меня зависит от прошлого шага
- private Long idQuestion;   идентификатор запроса - уникальный
- private Long idParent;    идентификатор  родителя
- private isList; -  является листом в иерархии ( нет потомков)?
- private isNeedAnswer; на данный узел должен быть ответ клиента
- private textQuestion; текст
+ * private Long idQuestion;   идентификатор запроса - уникальный
+ * private Long idParent;    идентификатор  родителя
+ * private isList; -  является листом в иерархии ( нет потомков)?
+ * private isNeedAnswer; на данный узел должен быть ответ клиента
+ * private textQuestion; текст
+ *
+ * id_entity  - сущность . Опредеднляем как   enum ShelterEntity
  **/
 @Entity
 @Table(name = "question")
@@ -22,6 +24,9 @@ public class Question {
     private Long idQuestion;
     @Column(name = "id_parent")
     private Long idParent;
+    @ManyToOne
+    @JoinColumn(name = "id_entity")
+    private ShelterObject idEntity;
     @Column(name = "is_list")
     private boolean isList;
     @Column(name = "is_need_answer")
@@ -29,9 +34,10 @@ public class Question {
     @Column(name = "text_question")
     private String textQuestion;
 
-    public Question(Long idQuestion, Long idParent, boolean isList, boolean isNeedAnswer, String textQuestion) {
+    public Question(Long idQuestion, Long idParent, ShelterObject idEntity, boolean isList, boolean isNeedAnswer, String textQuestion) {
         this.idQuestion = idQuestion;
         this.idParent = idParent;
+        this.idEntity = idEntity;
         this.isList = isList;
         this.isNeedAnswer = isNeedAnswer;
         this.textQuestion = textQuestion;
@@ -79,6 +85,15 @@ public class Question {
     public void setNeedAnswer(boolean list) {
         isNeedAnswer = list;
     }
+
+    public ShelterObject getIdEntity() {
+        return idEntity;
+    }
+
+    public void setIdEntity(ShelterObject idEntity) {
+        this.idEntity = idEntity;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -97,9 +112,10 @@ public class Question {
         return "Question{" +
                 "idQuestion=" + idQuestion +
                 ", idParent=" + idParent +
-                ", textQuestion='" + textQuestion + '\'' +
+                ", shelterEntity=" + idEntity +
                 ", isList=" + isList +
                 ", isNeedAnswer=" + isNeedAnswer +
+                ", textQuestion='" + textQuestion + '\'' +
                 '}';
     }
 }
