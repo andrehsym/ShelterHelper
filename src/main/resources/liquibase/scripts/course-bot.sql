@@ -18,11 +18,11 @@ CREATE INDEX shelterClient_idChat_idx ON shelterClient (idChat);
 -- changeSet rickln: v2.5
 CREATE TABLE shelter_pets
 (
-    id_pet      SERIAL  NOT NULL PRIMARY KEY,
+    id_pet      SERIAL NOT NULL  PRIMARY KEY,
     id_entity   INT  NOT NULL,
     pet_name    varchar(255),
     pet_text    varchar(255),
-    is_used      BOOLEAN
+    is_used     BOOLEAN
 );
 -- При создании  автоматически is_used  BOOLEAN DEFAULT FALSE
 ALTER TABLE shelter_pets ALTER is_used   SET DEFAULT FALSE;
@@ -59,7 +59,7 @@ CREATE TABLE question
     is_need_answer BOOLEAN,
     text_question  varchar(255)
 );
-ALTER TABLE squestion ALTER id_entity SET DEFAULT '1';
+ALTER TABLE question ALTER id_entity SET DEFAULT '1';
 -- changeSet rickln: v1.13
 CREATE TABLE answer
 (

@@ -8,18 +8,23 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import shelterhelper.excepton.IdNotFoundException;
 import shelterhelper.model.ShelterPets;
+import shelterhelper.repository.ShelterObjectRepository;
 import shelterhelper.repository.ShelterPetsRepository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ShelterPetsServiceImpl implements ShelterPetsService {
     private final Logger logger = LoggerFactory.getLogger(ShelterPetsServiceImpl.class);
     private final ShelterPetsRepository shelterPetsRepository;
+    private final ShelterObjectRepository shelterObjectRepository;
 
-    public ShelterPetsServiceImpl(ShelterPetsRepository shelterPetsRepository) {
+    public ShelterPetsServiceImpl(ShelterPetsRepository shelterPetsRepository, ShelterObjectRepository shelterObjectRepository) {
         this.shelterPetsRepository = shelterPetsRepository;
+        this.shelterObjectRepository = shelterObjectRepository;
     }
 
     /**
@@ -136,20 +141,21 @@ public class ShelterPetsServiceImpl implements ShelterPetsService {
     }
 
     @Override
-    public Collection<ShelterPets> getAllCats() {
-    //    return shelterPetsRepository.findAll()
-    //            .stream()
-    //            .filter(p -> p.getIdEntity().getIdEntity() == 1L
-    //
-        return null;
+    public List<ShelterPets> getAllCats() {
+        return getPetsByType("CAT");
     }
 
     @Override
-    public Collection<ShelterPets> getAllDogs() {
-        //return shelterPetsRepository.findAll()
-        //        .stream()
-        //        .filter(p -> p.getShelterEntity(). == ShelterEntity.DOG)
-        //        .collect(Collectors.toList());
-        return null;
+    public List<ShelterPets> getAllDogs() {
+        return getPetsByType("DOG");
+    }
+
+    private List<ShelterPets> getPetsByType(String str) {
+        int id_cat = shelterObjectRepository.getIdByText(str);
+        List<ShelterPets> pets = shelterPetsRepository.findAll()
+                .stream()
+                .filter(p -> p.getIdEntity().getIdEntity() == id_cat)
+                .collect(Collectors.toList());
+        return pets;
     }
 }

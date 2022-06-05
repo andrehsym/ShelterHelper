@@ -3,6 +3,7 @@ package shelterhelper.service;
 import shelterhelper.model.ShelterPets;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * методы интерфейса
@@ -22,9 +23,8 @@ public interface ShelterPetsService {
     Collection<ShelterPets> getAdoptedPets();
     Collection<ShelterPets> getCheckingDogs();
     Collection<ShelterPets> getCheckingCats();
-
-    Collection<ShelterPets> getAllCats();
-    Collection<ShelterPets> getAllDogs();
+    List<ShelterPets> getAllCats();
+    List<ShelterPets> getAllDogs();
 
     ShelterPets setPet(Long id);
     boolean removePet(Long id);
