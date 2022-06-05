@@ -11,6 +11,7 @@ import shelterhelper.model.ShelterPets;
 import shelterhelper.repository.ShelterPetsRepository;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Service
 public class ShelterPetsServiceImpl implements ShelterPetsService {
@@ -132,5 +133,23 @@ public class ShelterPetsServiceImpl implements ShelterPetsService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public Collection<ShelterPets> getAllCats() {
+    //    return shelterPetsRepository.findAll()
+    //            .stream()
+    //            .filter(p -> p.getIdEntity().getIdEntity() == 1L
+    //
+        return null;
+    }
+
+    @Override
+    public Collection<ShelterPets> getAllDogs() {
+        //return shelterPetsRepository.findAll()
+        //        .stream()
+        //        .filter(p -> p.getShelterEntity(). == ShelterEntity.DOG)
+        //        .collect(Collectors.toList());
+        return null;
     }
 }

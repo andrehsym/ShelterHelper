@@ -23,7 +23,9 @@ public interface ShelterPetsService {
     Collection<ShelterPets> getCheckingDogs();
     Collection<ShelterPets> getCheckingCats();
 
-    ShelterPets setPet(Long id);
+    Collection<ShelterPets> getAllCats();
+    Collection<ShelterPets> getAllDogs();
 
+    ShelterPets setPet(Long id);
     boolean removePet(Long id);
 }
