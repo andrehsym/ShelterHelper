@@ -11,6 +11,7 @@ import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.model.request.InlineQueryResult;
 import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.SendMessage;
+import com.vdurmont.emoji.EmojiParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -20,12 +21,17 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
+import static shelterhelper.model.Constants.*;
+
 @Service
 public class UpdateListener implements UpdatesListener {
 
     private Logger logger = LoggerFactory.getLogger(UpdateListener.class);
     private TelegramBot telegramBot;
     private final QuestionRepository questionRepository;
+
+    private String cat_emoji = EmojiParser.parseToUnicode(EMOJI_CAT);
+    private String dog_emoji = EmojiParser.parseToUnicode(EMOJI_DOG);
 //    List<InlineKeyboardButton> catButtons;
 
     public UpdateListener(TelegramBot telegramBot, QuestionRepository questionRepository) {
@@ -66,8 +72,8 @@ public class UpdateListener implements UpdatesListener {
             /*Приветствие из БД + */questionRepository.getQuestionById(1L).getTextQuestion() + "\nВыберите приют: ")
             .parseMode(ParseMode.HTML)
             .replyMarkup(new InlineKeyboardMarkup(new InlineKeyboardButton[][]
-                {{new InlineKeyboardButton("Приют для кошек").callbackData("catShelter")},
-                 {new InlineKeyboardButton("Приют для собак").callbackData("dogShelter")}})));
+                {{new InlineKeyboardButton("Приют для кошек" + cat_emoji ).callbackData("catShelter")},
+                 {new InlineKeyboardButton("Приют для собак" + dog_emoji).callbackData("dogShelter")}})));
     }
 
     private void checkingCallbackQuery(Update update, String callbackQuery) {
