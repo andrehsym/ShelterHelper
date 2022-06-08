@@ -3,17 +3,23 @@ package shelterhelper.service;
 import org.springframework.stereotype.Service;
 import shelterhelper.excepton.IdNotFoundException;
 import shelterhelper.model.Answer;
+import shelterhelper.model.AnswerImage;
+import shelterhelper.repository.AnswerImageRepository;
 import shelterhelper.repository.AnswerRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class ShelterAnswerServiceImpl implements ShelterAnswerService {
 
     private final AnswerRepository answerRepository;
+    private final AnswerImageRepository answerImageRepository;
 
-    public ShelterAnswerServiceImpl(AnswerRepository answerRepository) {
+    public ShelterAnswerServiceImpl(AnswerRepository answerRepository, AnswerImageRepository answerImageRepository) {
         this.answerRepository = answerRepository;
+        this.answerImageRepository = answerImageRepository;
     }
 
     @Override
@@ -27,6 +33,7 @@ public class ShelterAnswerServiceImpl implements ShelterAnswerService {
     }
 
     @Override
+//    @Transactional
     public List<Answer> getAnswersAll() {
         return answerRepository.findAllByOrderByIdQuestionAscIdAsc();
     }
@@ -44,6 +51,13 @@ public class ShelterAnswerServiceImpl implements ShelterAnswerService {
 
     @Override
     public void deleteAnswer(Long id) {
+//        answerRepository.findById(id).
+//                orElseThrow(() -> new IdNotFoundException("Информация по идентификатору не найдена" + id));
+//        AnswerImage answerImage = answerImageRepository.findByAnswer_Id(id).orElse(new AnswerImage());
+        if (answerImageRepository.existsAnswerImageByAnswer_Id(id)) {
+            answerImageRepository.deleteAnswerImageByAnswer_Id(id);
+            return;
+        }
         answerRepository.deleteById(id);
     }
 }

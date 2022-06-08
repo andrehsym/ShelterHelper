@@ -17,7 +17,8 @@ import java.util.Objects;
 public class ShelterPets {
 
     @Id
-    @GeneratedValue
+//    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_pet", unique = true)
     private Long idPet;
     @ManyToOne
