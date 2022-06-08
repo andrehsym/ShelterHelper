@@ -3,11 +3,15 @@ package shelterhelper.model;
 import javax.persistence.*;
 import java.util.Objects;
 
+/**
+ * справочник типов питомцев
+ * присохранении сразу нормализуем текстовые значения
+ */
 @Entity
 @Table(name = "shelter_entity")
 public class ShelterObject {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_entity", unique = true)
     private int idEntity;
     @Column(name = "text_entity")
@@ -15,7 +19,14 @@ public class ShelterObject {
 
     public ShelterObject(int idEntity, String textEntity) {
         this.idEntity = idEntity;
-        this.textEntity = textEntity;
+        this.textEntity = normalize(textEntity);
+    }
+
+    protected final String normalize(String str) {
+        if (str == null || str.isEmpty()) {
+            return " ";
+        }
+        return str.toUpperCase();
     }
 
     public ShelterObject() {
