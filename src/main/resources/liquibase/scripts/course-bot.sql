@@ -74,3 +74,13 @@ CREATE TABLE shelter_entity
     id_entity   INT NOT NULL PRIMARY KEY,
     text_entity varchar(50)
 );
+
+-- changeSet igor: 1
+CREATE TABLE answer_image
+(
+    id   bigint NOT NULL PRIMARY KEY,
+    data oid,
+    file_size bigint,
+    media_type varchar(255),
+    answer_id bigint
+);
