@@ -20,12 +20,16 @@ public interface ShelterPetsService {
     ShelterPets getPet(Long id);
 
     Collection<ShelterPets> getAllPets();
-    Collection<ShelterPets> getAdoptedPets();
-    Collection<ShelterPets> getCheckingDogs();
-    Collection<ShelterPets> getCheckingCats();
     List<ShelterPets> getAllCats();
     List<ShelterPets> getAllDogs();
 
-    ShelterPets setPet(Long id);
+    Collection<ShelterPets> getAdoptedPets();
+
+    Collection<ShelterPets> getCheckingPets();
+    Collection<ShelterPets> getCheckingDogs();
+    Collection<ShelterPets> getCheckingCats();
+
+
+    ShelterPets setPet(ShelterPets pet);
     boolean removePet(Long id);
 }

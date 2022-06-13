@@ -11,7 +11,7 @@ import java.util.Collection;
  * используя все правила формирования REST-запросов: GET-методы для получения данных, POST— для создания…
  */
 @RestController
-@RequestMapping("/pets")
+@RequestMapping("/pet")
 public class ShelterPetsController {
     private final ShelterPetsService shelterPetsService;
 
@@ -43,7 +43,7 @@ public class ShelterPetsController {
      * если задан критерий - показать  только кошек
      * если задан критерий - показать только собак
      */
-    @GetMapping
+    @GetMapping("/all")
     public Collection<ShelterPets> getAllPets(@RequestParam(required = false) boolean only_cat,
                                               @RequestParam(required = false) boolean only_dog) {
         if (only_cat) {
@@ -56,19 +56,44 @@ public class ShelterPetsController {
     }
 
     /**
-     * общий справочный запрос по идентификатору
-     * если критерии не заданы- показать всех
+     * справочный запрос по идентификатору
      */
     @GetMapping("{id}")
     public ShelterPets getPetById(@PathVariable long id) {
         return shelterPetsService.getPet(id);
     }
+
     /**
-     * PUT http://localhost:8080/student
+     * PUT http://localhost:8080/pets
      */
     @PutMapping
-    public ShelterPets updateStudent(@RequestBody Long id) {
-        return shelterPetsService.setPet(id);
+    public ShelterPets updatePet(@RequestBody ShelterPets pet) {
+        return shelterPetsService.setPet(pet);
     }
 
+    /**
+     * общий справочный запрос по всем усыновленным
+     */
+    @GetMapping("/adopted")
+    public Collection<ShelterPets> getAdoptedPets() {
+        return shelterPetsService.getAdoptedPets();
+    }
+
+    /**
+     * общий справочный запрос по питомцам на испытательном сроке
+     * если критерии не заданы- показать всех
+     * если задан критерий - показать  только кошек
+     * если задан критерий - показать только собак
+     */
+    @GetMapping("/checking")
+    public Collection<ShelterPets> getCheckingPets(@RequestParam(required = false) boolean only_cat,
+                                                   @RequestParam(required = false) boolean only_dog) {
+        if (only_cat) {
+            return shelterPetsService.getCheckingCats();
+        }
+        if (only_dog) {
+            return shelterPetsService.getCheckingDogs();
+        }
+        return shelterPetsService.getCheckingPets();
+    }
 }
