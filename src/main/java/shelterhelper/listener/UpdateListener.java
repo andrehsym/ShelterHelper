@@ -2,14 +2,8 @@ package shelterhelper.listener;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
-import com.pengrad.telegrambot.model.CallbackQuery;
-import com.pengrad.telegrambot.model.ChosenInlineResult;
-import com.pengrad.telegrambot.model.InlineQuery;
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
-import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
-import com.pengrad.telegrambot.model.request.InlineQueryResult;
-import com.pengrad.telegrambot.model.request.ParseMode;
+import com.pengrad.telegrambot.model.request.*;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.vdurmont.emoji.EmojiParser;
 import org.slf4j.Logger;
@@ -18,7 +12,6 @@ import org.springframework.stereotype.Service;
 import shelterhelper.repository.QuestionRepository;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.List;
 
 import static shelterhelper.model.Constants.*;
@@ -32,7 +25,6 @@ public class UpdateListener implements UpdatesListener {
 
     private String cat_emoji = EmojiParser.parseToUnicode(EMOJI_CAT);
     private String dog_emoji = EmojiParser.parseToUnicode(EMOJI_DOG);
-//    List<InlineKeyboardButton> catButtons;
 
     public UpdateListener(TelegramBot telegramBot, QuestionRepository questionRepository) {
         this.telegramBot        = telegramBot;
@@ -51,12 +43,8 @@ public class UpdateListener implements UpdatesListener {
     public int process(List<Update> updates) {
         updates.forEach(update -> {
             logger.info("Processing update: {}", update);
-            if (update.message() != null && update.message().text() != null) {
                 startMethod(update);
-            } else {
-                logger.info(update.callbackQuery().data() + "callBackData is called");
-                checkingCallbackQuery(update, update.callbackQuery().data());
-            }
+                checkingCallbackQuery(update);
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
@@ -68,24 +56,34 @@ public class UpdateListener implements UpdatesListener {
      */
 
     private void startMethod(Update update) {
-        telegramBot.execute(new SendMessage(update.message().chat().id(),
-            /*Приветствие из БД + */questionRepository.getQuestionById(1L).getTextQuestion() + "\nВыберите приют: ")
-            .parseMode(ParseMode.HTML)
-            .replyMarkup(new InlineKeyboardMarkup(new InlineKeyboardButton[][]
-                {{new InlineKeyboardButton("Приют для кошек" + cat_emoji ).callbackData("catShelter")},
-                 {new InlineKeyboardButton("Приют для собак" + dog_emoji).callbackData("dogShelter")}})));
-    }
-
-    private void checkingCallbackQuery(Update update, String callbackQuery) {
-        if (callbackQuery.startsWith("c")) {
-            callbackQueryCat(update, callbackQuery);
-        } else if (callbackQuery.startsWith("d")){
-            checkingCallbackQueryDog(update, callbackQuery);
+        try {
+            if (update.message().text().equals("/start")) {
+                telegramBot.execute(new SendMessage(update.message().chat().id(),
+                        /*Приветствие из БД + */questionRepository.getQuestionById(1L).getTextQuestion() + "\nВыберите приют: ")
+                        .parseMode(ParseMode.HTML)
+                        .replyMarkup(new InlineKeyboardMarkup(new InlineKeyboardButton[][]
+                                {{new InlineKeyboardButton("Приют для кошек" + cat_emoji).callbackData("catShelter")},
+                                        {new InlineKeyboardButton("Приют для собак" + dog_emoji).callbackData("dogShelter")}})));
+            }
+        } catch (NullPointerException e) {
+            logger.info("Exception: {}", e + " in startMethod");
         }
     }
 
-    private void checkingCallbackQueryDog(Update update, String callbackQuery) {
-        switch (callbackQuery) {
+    private void checkingCallbackQuery(Update update) {
+        try {
+            if (update.callbackQuery().data().startsWith("c")) {
+                checkingCallbackQueryCat(update);
+            } else if (update.callbackQuery().data().startsWith("d")) {
+                checkingCallbackQueryDog(update);
+            }
+        } catch (NullPointerException e) {
+            logger.info("Exception: {}", e + " in checkingCallbackQuery method");
+        }
+    }
+
+    private void checkingCallbackQueryDog(Update update) {
+        switch (update.callbackQuery().data()) {
             case "dogShelter":
                 dogShelter(update);
                 break;
@@ -101,8 +99,8 @@ public class UpdateListener implements UpdatesListener {
         }
     }
 
-    private void callbackQueryCat(Update update, String callbackQuery) {
-        switch (callbackQuery) {
+    private void checkingCallbackQueryCat(Update update) {
+        switch (update.callbackQuery().data()) {
             case "catShelter":
                 catShelter(update);
                 break;
@@ -116,6 +114,24 @@ public class UpdateListener implements UpdatesListener {
                 catReport(update);
                 break;
         }
+    }
+
+    //пользовательские кнопки
+    private void replyKeyboard(Update update) {
+        SendMessage messsage = new SendMessage(update.callbackQuery().from().id(), null);
+        Keyboard keyboard = new ReplyKeyboardMarkup(
+                new KeyboardButton[][]
+                        {{new KeyboardButton("Позвать волонтера"),
+                                new KeyboardButton("Записать контакты")},
+                                {new KeyboardButton("Вернуться в главное меню")}}
+        );
+
+//        Keyboard replyKeyboardMarkup = new ReplyKeyboardMarkup(
+//                new String[]{"Позвать волонтера", "Записать контакты"},
+//                new String[]{"Вернуться в главное меню"})
+//                .oneTimeKeyboard(true)   // optional
+//                .resizeKeyboard(true);
+        telegramBot.execute(messsage.replyMarkup(keyboard));
     }
 
     private void catShelter(Update update) {
@@ -158,6 +174,7 @@ public class UpdateListener implements UpdatesListener {
         InlineKeyboardButton catSendPhoto = new InlineKeyboardButton("Прислать фото кошки");
         //Дальше обработка действий клиента при отправке отчета о кошке. Если отослал фото - проверка и
         // просьба отослать информацию о здоровье, питании и изменениях поведения
+        // + напоминалка
 
         //кнопки -->
 //        InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup(
@@ -209,6 +226,7 @@ public class UpdateListener implements UpdatesListener {
         InlineKeyboardButton dogSendPhoto = new InlineKeyboardButton("Прислать фото кошки");
         //Дальше обработка действий клиента при отправке отчета о собаке. Если отослал фото - проверка и
         // просьба отослать информацию о здоровье, питании и изменениях поведения
+        // + напоминалка
 
         //кнопки -->
 //        InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup(
