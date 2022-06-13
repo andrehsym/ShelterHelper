@@ -27,28 +27,20 @@ CREATE TABLE shelter_pets
 -- При создании  автоматически is_used  BOOLEAN DEFAULT FALSE
 ALTER TABLE shelter_pets ALTER is_used   SET DEFAULT FALSE;
 
--- changeSet rickln: v1.31
-CREATE TABLE adopter_dogs
+-- changeSet rickln: v1.43
+CREATE TABLE adopter_pets
 (
-    id_user                  bigint NOT NULL PRIMARY KEY,
-    id_pet                   bigint NOT NULL PRIMARY KEY,
+    id                       bigint NOT NULL PRIMARY KEY,
+    id_user                  bigint NOT NULL,
+    id_pet                   bigint NOT NULL,
+    id_entity                INT  NOT NULL,
     id_checked               BOOLEAN,
-    is_problem               BOOLEAN,
-    amount_of_probation_days INTEGER,
+    is_adopter               BOOLEAN,
+    date_probation           DATE,
+    amount_of_probation_days INTEGER DEFAULT 30,
     amount_of_extra_days     INTEGER
-
 );
--- changeSet rickln: v1.31
-CREATE TABLE adopter_cats
-(
-    id_user                  bigint NOT NULL PRIMARY KEY,
-    id_pet                   bigint NOT NULL PRIMARY KEY,
-    id_checked               BOOLEAN,
-    is_problem               BOOLEAN,
-    amount_of_probation_days INTEGER,
-    amount_of_extra_days     INTEGER
 
-);
 -- changeSet rickln: v2.11
 CREATE TABLE question
 (
