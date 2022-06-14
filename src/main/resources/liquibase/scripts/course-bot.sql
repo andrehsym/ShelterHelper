@@ -76,3 +76,13 @@ CREATE TABLE answer_image
     media_type varchar(255),
     answer_id bigint
 );
+
+-- changeSet igor: 2
+CREATE TABLE pets_photos
+(
+    id_photo   bigint NOT NULL PRIMARY KEY,
+    data oid,
+    file_size bigint,
+    media_type varchar(255),
+    id_pet bigint
+);

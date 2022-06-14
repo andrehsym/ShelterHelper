@@ -56,10 +56,6 @@ public class AnswerImageService {
         AnswerImage answerImage = answerImageRepository.findByAnswer_Id(id).
                 orElseThrow(() -> new IdNotFoundException("Такого идентификатора в таблице answer не существует" + id));
         answerImageRepository.deleteById(answerImage.getId());
-//                orElseThrow(() -> new IdNotFoundException("Такого идентификатора в таблице answer не существует" + id));
-
-//        answerImageRepository.deleteById(id);
-//        answerImageRepository.deleteAllById();
     }
 
 }
