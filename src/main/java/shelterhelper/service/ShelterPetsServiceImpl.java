@@ -14,7 +14,7 @@ import shelterhelper.repository.ShelterPetsRepository;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
 
 @Service
 public class ShelterPetsServiceImpl implements ShelterPetsService {
@@ -53,21 +53,6 @@ public class ShelterPetsServiceImpl implements ShelterPetsService {
 
     }
 
-    /**
-     * показать полный список БД
-     *
-     * @return Collection<ShelterPets>
-     */
-    @Override
-    public Collection<ShelterPets> getAllPets() {
-        logger.info("Method was called - getAllPets");
-        Collection<ShelterPets> shelterDogs = shelterPetsRepository.findAll();
-        if (shelterDogs.size() == 0) {
-            logger.warn("Method was stopped - getAllPets");
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
-        return shelterDogs;
-    }
 
     /**
      * Список питомцев из БД, которые уже усыновлены
@@ -76,12 +61,12 @@ public class ShelterPetsServiceImpl implements ShelterPetsService {
     @Override
     public Collection<ShelterPets> getAdoptedPets() {
         logger.info("Method was called - getAdoptedPets");
-        Collection<ShelterPets> shelterDogs = shelterPetsRepository.getAdoptedPets();
-        if (shelterDogs.size() == 0) {
+        Collection<ShelterPets> shelterPets = shelterPetsRepository.getAdoptedPets();
+        if (shelterPets.size() == 0) {
             logger.warn("Method was stopped - getAdoptedPets");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        return shelterDogs;
+        return shelterPets;
     }
 
     /**
@@ -90,37 +75,42 @@ public class ShelterPetsServiceImpl implements ShelterPetsService {
      * нвходятся в БД adopted_dog + is_checking = true
      */
     @Override
-    public Collection<ShelterPets> getCheckingDogs() {
+    public Collection<ShelterPets> getCheckingPets() {
         logger.info("Method was called - getCheckingPets");
-        Collection<ShelterPets> shelterDogs = shelterPetsRepository.getCheckingDogs();
-        if (shelterDogs.size() == 0) {
+        Collection<ShelterPets> shelterPets = shelterPetsRepository.getCheckingPets();
+        if (shelterPets.size() == 0) {
             logger.warn("Method was stopped - getCheckingPets");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        return shelterDogs;
+        return shelterPets;
+
+    }
+
+    /**
+     * Список только кошек или только собак  из БД, которые на испытательном сроке
+     * критерии - нвходятсяв текущей БД
+     * нвходятся в БД adopted_dog + is_checking = true
+     */
+
+    @Override
+    public Collection<ShelterPets> getCheckingDogs() {
+        logger.info("Method was called - getCheckingDogs");
+        return getCheckingPetsByType("DOG");
     }
 
     @Override
     public Collection<ShelterPets> getCheckingCats() {
-        logger.info("Method was called - getCheckingPets");
-        Collection<ShelterPets> shelterDogs = shelterPetsRepository.getCheckingCats();
-        if (shelterDogs.size() == 0) {
-            logger.warn("Method was stopped - getCheckingPets");
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
-        return shelterDogs;
+        logger.info("Method was called - getCheckingCats");
+        return getCheckingPetsByType("CAT");
     }
 
     /**
-     * редактирование записи
-     *
-     * @param id идентификатор питомца
-     * @return экземпляр класса
+     * @param pet запись для редактирования
+     * @return ShelterPets
      */
     @Override
-    public ShelterPets setPet(Long id) {
-        ShelterPets shelterPets = getPet(id);
-        return shelterPetsRepository.save(shelterPets);
+    public ShelterPets setPet(ShelterPets pet) {
+        return shelterPetsRepository.save(pet);
     }
 
     /**
@@ -140,6 +130,28 @@ public class ShelterPetsServiceImpl implements ShelterPetsService {
         return true;
     }
 
+    /**
+     * показать полный список БД
+     *
+     * @return Collection<ShelterPets>
+     */
+    @Override
+    public Collection<ShelterPets> getAllPets() {
+        logger.info("Method was called - getAllPets");
+        Collection<ShelterPets> shelterPets = shelterPetsRepository.findAll();
+        if (shelterPets.size() == 0) {
+            logger.warn("Method was stopped - getAllPets");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        return shelterPets;
+    }
+
+    /**
+     * список питомцев. Только коше или только собак
+     * БД сущностей содержит только нормализованные записи
+     *
+     * @return List<ShelterPets>
+     */
     @Override
     public List<ShelterPets> getAllCats() {
         return getPetsByType("CAT");
@@ -151,11 +163,18 @@ public class ShelterPetsServiceImpl implements ShelterPetsService {
     }
 
     private List<ShelterPets> getPetsByType(String str) {
-        int id_cat = shelterObjectRepository.getIdByText(str);
-        List<ShelterPets> pets = shelterPetsRepository.findAll()
+        int id_pet = shelterObjectRepository.getIdByText(str);
+        return shelterPetsRepository.findAll()
                 .stream()
-                .filter(p -> p.getIdEntity().getIdEntity() == id_cat)
+                .filter(p -> p.getIdEntity().getIdEntity() == id_pet)
                 .collect(Collectors.toList());
-        return pets;
+    }
+
+    private List<ShelterPets> getCheckingPetsByType(String str) {
+        int id_pet = shelterObjectRepository.getIdByText(str);
+        return shelterPetsRepository.getCheckingPets()
+                .stream()
+                .filter(p -> p.getIdEntity().getIdEntity() == id_pet)
+                .collect(Collectors.toList());
     }
 }
