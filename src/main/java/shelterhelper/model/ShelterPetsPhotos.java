@@ -16,8 +16,6 @@ public class ShelterPetsPhotos {
     @Lob
     private byte[] data;
 
-//    @OneToOne (cascade=CascadeType.ALL)
-//    @ManyToOne(optional=true, cascade=CascadeType.ALL)
     @ManyToOne
     @JoinColumn(name = "id_pet")
     private ShelterPets shelterPets;

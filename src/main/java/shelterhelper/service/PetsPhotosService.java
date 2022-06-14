@@ -83,9 +83,9 @@ public class PetsPhotosService {
         return photoByNumber;
     }
 
-    public HashMap<String,Integer> getNumberPhotosEachPet() {
+    public TreeMap<String,Integer> getNumberPhotosEachPet() {
         List<ShelterPets> petsList = shelterPetsRepository.findAll();
-        HashMap<String, Integer> numberPhotosPet= new HashMap<>();
+        TreeMap<String, Integer> numberPhotosPet= new TreeMap<>();
         Integer numberPhotos = 0;
         String descriptionPet;
         for (ShelterPets pet : petsList) {
@@ -119,5 +119,31 @@ public class PetsPhotosService {
         return listPhotos;
     }
 
+    public List<String> downloadAllInfo() {
+        List<ShelterPetsPhotos> photos = shelterPetsPhotosRepository.findAll();
+        if (photos.size() == 0) {
+            Throwable throwable = new IdNotFoundException("Фотографий нет");
+        }
+        ArrayList<String> infoByPhotos = new ArrayList<>();
+        String info;
+        for (ShelterPetsPhotos photo : photos) {
+            info = "id_photo=" + photo.getId_photo() + ", fileSize=" + photo.getFileSize()
+            + ", mediaType=" + photo.getMediaType() + ", idPet=" + photo.getShelterPets().getIdPet()
+            + ", " + photo.getShelterPets().getIdEntity().getTextEntity()
+            + ", petName=" + photo.getShelterPets().getPetName();
+            infoByPhotos.add(info);
+        }
+        return infoByPhotos;
+    }
+
+    public void deletePhoto(Long idPet) {
+        ShelterPetsPhotos photo = shelterPetsPhotosRepository.findById(idPet)
+                .orElseThrow(()-> new IdNotFoundException("Такого идентификатора в таблице pets_photos не существует" + idPet));
+        shelterPetsPhotosRepository.deleteById(idPet);
+    }
+
+    public void deleteAll() {
+        shelterPetsPhotosRepository.deleteAll();
+    }
 }
 
