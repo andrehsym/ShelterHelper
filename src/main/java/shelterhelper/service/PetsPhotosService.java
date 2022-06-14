@@ -47,11 +47,6 @@ public class PetsPhotosService {
         shelterPetsPhotosRepository.save(shelterPetsPhotos);
     }
 
-//    public AnswerImage findAnswerImage(Long answerId) {
-//        AnswerImage answerImage = answerImageRepository.findByAnswer_Id(answerId).orElse(new AnswerImage());
-//        return answerImage;
-//    }
-
     public List<ResponseEntity<byte[]>> downloadPhotos(Long idPet) {
         List<ShelterPetsPhotos> photos = shelterPetsPhotosRepository.findAllByShelterPets_IdPet(idPet);
         if (photos.size() == 0) {
@@ -88,19 +83,6 @@ public class PetsPhotosService {
         return photoByNumber;
     }
 
-//    public HashMap<ShelterPets,Integer> getNumberPhotosEachPet1() {
-//        List<ShelterPets> petsList = shelterPetsRepository.findAll();
-//        HashMap<ShelterPets, Integer> numberPhotosPet= new HashMap<>();
-//        Integer numberPhotos = 0;
-//        for (ShelterPets pet : petsList) {
-//            List<ShelterPetsPhotos> photos =
-//                    shelterPetsPhotosRepository.findAllByShelterPets_IdPet(pet.getIdPet());
-//            numberPhotos = photos.size();
-//            numberPhotosPet.put(pet, numberPhotos);
-//        }
-//        return numberPhotosPet;
-//    }
-
     public HashMap<String,Integer> getNumberPhotosEachPet() {
         List<ShelterPets> petsList = shelterPetsRepository.findAll();
         HashMap<String, Integer> numberPhotosPet= new HashMap<>();
@@ -117,37 +99,25 @@ public class PetsPhotosService {
         return numberPhotosPet;
     }
 
-//    public Set<ResponseEntity<byte[]>> downloadPhotos1(Long idPet) {
-//        List<ShelterPetsPhotos> photos = shelterPetsPhotosRepository.findAllByShelterPets_IdPet(idPet);
-//        if (photos.size() == 0) {
-//            Throwable throwable = new IdNotFoundException("Такого идентификатора в таблице answer не существует" + idPet);
-//        }
-//        Set<ResponseEntity<byte[]>> listPhotos = new HashSet<>();
-//        for (ShelterPetsPhotos photoPet:photos) {
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.setContentType(MediaType.parseMediaType(photoPet.getMediaType()));
-//            headers.setContentLength(photoPet.getData().length);
-//            listPhotos.add(ResponseEntity.status(HttpStatus.OK).headers(headers).body(photoPet.getData()));
-//        }
-//        return listPhotos;
-//    }
+    public ShelterPetsPhotos findPhotoById(Long idPhoto) {
+        ShelterPetsPhotos petPhoto = shelterPetsPhotosRepository.findById(idPhoto).orElse(new ShelterPetsPhotos());
+        return petPhoto;
+    }
 
-//    public List<byte[]> downloadPhotos(Long idPet) {
-//        List<ShelterPetsPhotos> photos = shelterPetsPhotosRepository.findAllByShelterPets_IdPet(idPet);
-//        if (photos.size() == 0) {
-//            Throwable throwable = new IdNotFoundException("Такого идентификатора в таблице answer не существует" + idPet);
-////            return null;
-//        }
-//        ArrayList<byte[]> listPhotos = new ArrayList<byte[]>();
-//        for (ShelterPetsPhotos photoPet:photos) {
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.setContentType(MediaType.parseMediaType(photoPet.getMediaType()));
-//            headers.setContentLength(photoPet.getData().length);
-////            listPhotos.add(ResponseEntity.status(HttpStatus.OK).headers(headers).body(photoPet.getData()));
-//            listPhotos.add(ResponseEntity.of(photoPet.getData().));
-//        }
-//        return listPhotos;
-//    }
+    public List<ResponseEntity<byte[]>> downloadAll() {
+        List<ShelterPetsPhotos> photos = shelterPetsPhotosRepository.findAll();
+        if (photos.size() == 0) {
+            Throwable throwable = new IdNotFoundException("Фотографий нет");
+        }
+        ArrayList<ResponseEntity<byte[]>> listPhotos = new ArrayList<ResponseEntity<byte[]>>();
+        for (ShelterPetsPhotos photoPet:photos) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType(photoPet.getMediaType()));
+            headers.setContentLength(photoPet.getData().length);
+            listPhotos.add(ResponseEntity.status(HttpStatus.OK).headers(headers).body(photoPet.getData()));
+        }
+        return listPhotos;
+    }
 
 }
 

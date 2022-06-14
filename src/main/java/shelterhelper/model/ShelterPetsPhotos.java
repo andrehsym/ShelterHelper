@@ -10,7 +10,7 @@ public class ShelterPetsPhotos {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id_photo;
+    private long idPhoto;
     private long fileSize;
     private String mediaType;
     @Lob
@@ -23,11 +23,11 @@ public class ShelterPetsPhotos {
     private ShelterPets shelterPets;
 
     public long getId_photo() {
-        return id_photo;
+        return idPhoto;
     }
 
     public void setId_photo(long id_photo) {
-        this.id_photo = id_photo;
+        this.idPhoto = id_photo;
     }
 
     public long getFileSize() {
@@ -67,12 +67,12 @@ public class ShelterPetsPhotos {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ShelterPetsPhotos that = (ShelterPetsPhotos) o;
-        return id_photo == that.id_photo && fileSize == that.fileSize && mediaType.equals(that.mediaType) && Arrays.equals(data, that.data) && shelterPets.equals(that.shelterPets);
+        return idPhoto == that.idPhoto && fileSize == that.fileSize && mediaType.equals(that.mediaType) && Arrays.equals(data, that.data) && shelterPets.equals(that.shelterPets);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(id_photo, fileSize, mediaType, shelterPets);
+        int result = Objects.hash(idPhoto, fileSize, mediaType, shelterPets);
         result = 31 * result + Arrays.hashCode(data);
         return result;
     }
@@ -80,7 +80,7 @@ public class ShelterPetsPhotos {
     @Override
     public String toString() {
         return "ShelterPetsPhotos{" +
-                "id_photo=" + id_photo +
+                "id_photo=" + idPhoto +
                 ", fileSize=" + fileSize +
                 ", mediaType='" + mediaType + '\'' +
                 ", data=" + Arrays.toString(data) +
