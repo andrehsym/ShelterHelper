@@ -96,3 +96,13 @@ CREATE TABLE reports
     is_accepted boolean default false,
     id bigint NOT NULL
 );
+
+-- changeSet igor: 4
+CREATE TABLE report_photos
+(
+    id_photo   bigint NOT NULL PRIMARY KEY,
+    data oid,
+    file_size bigint,
+    media_type varchar(255),
+    id_report bigint
+);

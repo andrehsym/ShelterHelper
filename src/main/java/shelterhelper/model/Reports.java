@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * Таблица отчетов - для хранения отчетов и работы с ними волонтеров.
@@ -40,4 +41,75 @@ public class Reports {
     @OneToMany(mappedBy = "reports", cascade=CascadeType.ALL)
     @JsonIgnore
     private Collection<ReportPhotos> reportPhotos;
+
+    public Reports(Long idReport, LocalDate dateReport, String textReport, boolean isAccepted) {
+        this.idReport = idReport;
+        this.dateReport = dateReport;
+        this.textReport = textReport;
+        this.isAccepted = isAccepted;
+    }
+
+    public Reports() {
+    }
+
+    public Long getIdReport() {
+        return idReport;
+    }
+
+    public void setIdReport(Long idReport) {
+        this.idReport = idReport;
+    }
+
+    public LocalDate getDateReport() {
+        return dateReport;
+    }
+
+    public void setDateReport(LocalDate dateReport) {
+        this.dateReport = dateReport;
+    }
+
+    public String getTextReport() {
+        return textReport;
+    }
+
+    public void setTextReport(String textReport) {
+        this.textReport = textReport;
+    }
+
+    public boolean isAccepted() {
+        return isAccepted;
+    }
+
+    public void setAccepted(boolean accepted) {
+        isAccepted = accepted;
+    }
+
+    public AdoptedPets getAdoptedPets() {
+        return adoptedPets;
+    }
+
+    public void setAdoptedPets(AdoptedPets adoptedPets) {
+        this.adoptedPets = adoptedPets;
+    }
+
+    public Collection<ReportPhotos> getReportPhotos() {
+        return reportPhotos;
+    }
+
+    public void setReportPhotos(Collection<ReportPhotos> reportPhotos) {
+        this.reportPhotos = reportPhotos;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Reports reports = (Reports) o;
+        return isAccepted == reports.isAccepted && idReport.equals(reports.idReport) && dateReport.equals(reports.dateReport) && Objects.equals(textReport, reports.textReport) && adoptedPets.equals(reports.adoptedPets);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idReport, dateReport, textReport, isAccepted, adoptedPets);
+    }
 }
