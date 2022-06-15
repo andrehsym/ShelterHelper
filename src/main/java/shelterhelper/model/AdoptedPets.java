@@ -28,7 +28,7 @@ import java.util.Objects;
 //)
 public   class AdoptedPets{
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true)
     public Long id;
     @Column(name = "id_user")
