@@ -1,7 +1,10 @@
 package shelterhelper.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.Objects;
 
 /**
@@ -48,6 +51,9 @@ public   class AdoptedPets{
     @ManyToOne
     @JoinColumn(name = "id_entity")
     private ShelterObject idEntity;
+    @OneToMany(mappedBy = "adoptedPets", cascade=CascadeType.ALL)
+    @JsonIgnore
+    private Collection<Reports> reports;
 
     public AdoptedPets(Long id, Long idUser, Long idPet, boolean isChecked, boolean isAdopter, LocalDate dateProbation, int amountOfProbationDays, int amountOfExtraDays, ShelterObject idEntity) {
         this.id = id;
@@ -135,6 +141,14 @@ public   class AdoptedPets{
 
     public void setAmountOfExtraDays(int amountOfExtraDays) {
         this.amountOfExtraDays = amountOfExtraDays;
+    }
+
+    public Collection<Reports> getReports() {
+        return reports;
+    }
+
+    public void setReports(Collection<Reports> reports) {
+        this.reports = reports;
     }
 
     @Override

@@ -13,11 +13,10 @@ import java.util.Collection;
  * фотографии питомцев, присылаемые вместе с отчетом. Каждый отчет должен
  * содержать одну или несколько фотографий. Поступая из telegramBot, отчеты
  * записываются в таблицу reports, а фотографии в таблицу report_photos.
- * private Long idPet;    идентификатор
- * idEntity - cущность ( кот, собака, и запись - по умолчанию, нужна для настроек меню
- * private Long petName;  имя
- * private String petText; описание
- * private boolean isUsed;  уже усыновлен
+ * idReport - идентификатор отчета;
+ * dateReport - дата отчета (проставляется автоматически текущая);
+ * textReport - текст отчета (ограничен 900 знаков);
+ * isAccepted - флаг проверки отчета: отчет принят - true, не принят - false (default - false).
  */
 @Entity
 @Table(name = "reports")
@@ -28,19 +27,16 @@ public class Reports {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_report", unique = true)
     public Long idReport;
-    @Column(name = "id_user")
-    public Long idUser;
-    @Column(name = "id_pet")
-    public Long idPet;
-    @Column(name = "is_checked")
-    public boolean isChecked;
-    @Column(name = "is_adopter")
-    public boolean isAdopter;
-    @Column(name = "date_Probation")
-    public LocalDate dateProbation;
+    @Column(name = "date_report")
+    public LocalDate dateReport;
+    @Column(name = "text_report")
+    public String textReport;
+    @Column(name = "is_accepted")
+    public boolean isAccepted;
+
     @ManyToOne
-    @JoinColumn(name = "id_user")
-    private ShelterClient shelterClient;
+    @JoinColumn(name = "id")
+    private AdoptedPets adoptedPets;
     @OneToMany(mappedBy = "reports", cascade=CascadeType.ALL)
     @JsonIgnore
     private Collection<ReportPhotos> reportPhotos;

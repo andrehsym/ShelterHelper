@@ -35,9 +35,6 @@ public class ShelterClient {
     @Column(name = "id_question")
     private Long idQuestion;
     private boolean isAdopt;
-    @OneToMany(mappedBy = "shelterClient", cascade=CascadeType.ALL)
-    @JsonIgnore
-    private Collection<Reports> reports;
 
     public ShelterClient(Long idUser, Long idChat, String nameUserInChat, LocalDateTime stamp, String emailUser, String phoneUser, Long idQuestion, boolean isAdopt) {
         this.idUser = idUser;
