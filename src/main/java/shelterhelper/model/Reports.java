@@ -38,6 +38,9 @@ public class Reports {
     public boolean isAdopter;
     @Column(name = "date_Probation")
     public LocalDate dateProbation;
+    @ManyToOne
+    @JoinColumn(name = "id_user")
+    private ShelterClient shelterClient;
     @OneToMany(mappedBy = "reports", cascade=CascadeType.ALL)
     @JsonIgnore
     private Collection<ReportPhotos> reportPhotos;
