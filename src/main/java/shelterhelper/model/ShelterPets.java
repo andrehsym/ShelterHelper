@@ -1,6 +1,9 @@
 package shelterhelper.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Objects;
 
 /**
@@ -17,7 +20,8 @@ import java.util.Objects;
 public class ShelterPets {
 
     @Id
-    @GeneratedValue
+//    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_pet", unique = true)
     private Long idPet;
     @ManyToOne
@@ -29,6 +33,9 @@ public class ShelterPets {
     private String petText;
     @Column(name = "is_used")
     private boolean isUsed;
+    @OneToMany(mappedBy = "shelterPets", cascade=CascadeType.ALL)
+    @JsonIgnore
+    private Collection<ShelterPetsPhotos> shelterPetsPhotos;
 
     public ShelterPets(Long idPet, ShelterObject idEntity, String petName, String petText, boolean isUsed) {
         this.idPet = idPet;
@@ -79,6 +86,14 @@ public class ShelterPets {
 
     public void setUsed(boolean used) {
         isUsed = used;
+    }
+
+    public Collection<ShelterPetsPhotos> getShelterPetsPhotos() {
+        return shelterPetsPhotos;
+    }
+
+    public void setShelterPetsPhotos(Collection<ShelterPetsPhotos> shelterPetsPhotos) {
+        this.shelterPetsPhotos = shelterPetsPhotos;
     }
 
     @Override
