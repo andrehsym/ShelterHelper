@@ -44,7 +44,7 @@ public class ReportPhotosController {
     /**
      * Получить фотографию по ее id (idPhoto)
      */
-    @GetMapping(value = "/photo/{idPhoto}")
+    @GetMapping(value = "/photo-report/{idPhoto}")
     public ResponseEntity<byte[]> downloadPhoto(@PathVariable Long idPhoto) {
         ReportPhotos reportPhoto = reportPhotosService.findPhotoById(idPhoto);
         if (reportPhoto.getMediaType() == null) {
@@ -61,8 +61,8 @@ public class ReportPhotosController {
      * тогда удаляются все фото, если all = false (установлено по умолчанию) и указан
      * идентификатор фото (idPhoto), тогда удаляется одна фотография с указанным id
      */
-    @DeleteMapping("/delete")
-    public ResponseEntity<ShelterPetsPhotos> delete(@RequestParam Long idPhoto,
+    @DeleteMapping("/photo-delete")
+    public ResponseEntity<ReportPhotos> delete(@RequestParam Long idPhoto,
                                                     @RequestParam(required = false) boolean all) {
         if (all) {
             reportPhotosService.deleteAll();
