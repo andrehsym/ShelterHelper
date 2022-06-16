@@ -38,7 +38,7 @@ public class PetsPhotosService {
         logger.info("Method was called - uploadPetPhoto");
         ShelterPets shelterPets = shelterPetsRepository.findById(idPet).
                 orElseThrow(() -> new IdNotFoundException
-                        ("Такого идентификатора в таблице answer не существует" + idPet));
+                        ("Такого идентификатора в таблице shelter_pets не существует" + idPet));
         ShelterPetsPhotos shelterPetsPhotos = new ShelterPetsPhotos();
         shelterPetsPhotos.setShelterPets(shelterPets);
         shelterPetsPhotos.setFileSize(answerImageFile.getSize());
