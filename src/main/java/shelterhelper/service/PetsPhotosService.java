@@ -34,16 +34,16 @@ public class PetsPhotosService {
         this.shelterObjectRepository = shelterObjectRepository;
     }
 
-    public void uploadPetPhoto(Long idPet, MultipartFile answerImageFile) throws IOException {
+    public void uploadPetPhoto(Long idPet, MultipartFile shelterPetsPhotosFile) throws IOException {
         logger.info("Method was called - uploadPetPhoto");
         ShelterPets shelterPets = shelterPetsRepository.findById(idPet).
                 orElseThrow(() -> new IdNotFoundException
                         ("Такого идентификатора в таблице shelter_pets не существует" + idPet));
         ShelterPetsPhotos shelterPetsPhotos = new ShelterPetsPhotos();
         shelterPetsPhotos.setShelterPets(shelterPets);
-        shelterPetsPhotos.setFileSize(answerImageFile.getSize());
-        shelterPetsPhotos.setMediaType(answerImageFile.getContentType());
-        shelterPetsPhotos.setData(answerImageFile.getBytes());
+        shelterPetsPhotos.setFileSize(shelterPetsPhotosFile.getSize());
+        shelterPetsPhotos.setMediaType(shelterPetsPhotosFile.getContentType());
+        shelterPetsPhotos.setData(shelterPetsPhotosFile.getBytes());
         shelterPetsPhotosRepository.save(shelterPetsPhotos);
     }
 
@@ -136,10 +136,10 @@ public class PetsPhotosService {
         return infoByPhotos;
     }
 
-    public void deletePhoto(Long idPet) {
-        ShelterPetsPhotos photo = shelterPetsPhotosRepository.findById(idPet)
-                .orElseThrow(()-> new IdNotFoundException("Такого идентификатора в таблице pets_photos не существует" + idPet));
-        shelterPetsPhotosRepository.deleteById(idPet);
+    public void deletePhoto(Long idPhoto) {
+        ShelterPetsPhotos photo = shelterPetsPhotosRepository.findById(idPhoto)
+                .orElseThrow(()-> new IdNotFoundException("Такого идентификатора в таблице pets_photos не существует" + idPhoto));
+        shelterPetsPhotosRepository.deleteById(idPhoto);
     }
 
     public void deleteAll() {
