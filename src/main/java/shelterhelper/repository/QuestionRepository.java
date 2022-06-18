@@ -24,4 +24,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long>{
 
     @Query(value = "SELECT  *  FROM question WHERE id_parent = ?1", nativeQuery = true)
     List<Question> getQuestionByParent(Long id);
+
+    @Query(value = "SELECT  id_parent  FROM question WHERE id_question = ?1", nativeQuery = true)
+    Long getParentById(Long id);
 }

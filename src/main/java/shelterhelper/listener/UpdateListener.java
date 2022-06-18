@@ -25,6 +25,9 @@ public class UpdateListener implements UpdatesListener {
 
     private String cat_emoji = EmojiParser.parseToUnicode(EMOJI_CAT);
     private String dog_emoji = EmojiParser.parseToUnicode(EMOJI_DOG);
+    private String question_emoji = EmojiParser.parseToUnicode(EMOJI_QUESTION);
+    private String man_emoji = EmojiParser.parseToUnicode(EMOJI_PERSON);
+    private String pencil_emoji = EmojiParser.parseToUnicode(EMOJI_PENCIL);
 
     public UpdateListener(TelegramBot telegramBot, QuestionRepository questionRepository) {
         this.telegramBot        = telegramBot;
@@ -59,11 +62,11 @@ public class UpdateListener implements UpdatesListener {
         try {
             if (update.message().text().equals("/start")) {
                 telegramBot.execute(new SendMessage(update.message().chat().id(),
-                        /*Приветствие из БД + */questionRepository.getQuestionById(1L).getTextQuestion() + "\nВыберите приют: ")
+                        /*Приветствие из БД + */getQuestion(1L) + "\nВыберите приют: ")
                         .parseMode(ParseMode.HTML)
                         .replyMarkup(new InlineKeyboardMarkup(new InlineKeyboardButton[][]
-                                {{new InlineKeyboardButton("Приют для кошек" + cat_emoji).callbackData("catShelter")},
-                                        {new InlineKeyboardButton("Приют для собак" + dog_emoji).callbackData("dogShelter")}})));
+                                {{new InlineKeyboardButton(getQuestion(2L) + cat_emoji).callbackData("catShelter")},
+                                        {new InlineKeyboardButton(getQuestion(3L)  + dog_emoji).callbackData("dogShelter")}})));
             }
         } catch (NullPointerException e) {
             logger.info("Exception: {}", e + " in startMethod");
@@ -135,37 +138,36 @@ public class UpdateListener implements UpdatesListener {
     }
 
     private void catShelter(Update update) {
-        telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), /*Приветствие из БД + */"Приют для кошек: ")
+        telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), getQuestion(2L) )
             .replyMarkup(new InlineKeyboardMarkup(new InlineKeyboardButton[][]
-                {{new InlineKeyboardButton("Информация о приюте для кошек").callbackData("catShelterInfo")},
-                {new InlineKeyboardButton("Как взять кошку из приюта").callbackData("catAdopt")},
-                {new InlineKeyboardButton("Прислать отчет о кошке").callbackData("catReport")},
-                {new InlineKeyboardButton("Позвать волонтера").callbackData("callVolunteer")}})));
+                {{new InlineKeyboardButton(cat_emoji + getQuestion(4L) + question_emoji ).callbackData("catShelterInfo")},
+                 {new InlineKeyboardButton(cat_emoji + getQuestion(5L) + question_emoji ).callbackData("catAdopt")},
+                 {new InlineKeyboardButton(cat_emoji + getQuestion(6L) + pencil_emoji ).callbackData("catReport")},
+                 {new InlineKeyboardButton(cat_emoji + getQuestion(7L) + man_emoji  ).callbackData("callVolunteer")}})));
     }
 
     private void catShelterInfo(Update update) {
-        telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), /*Приветствие из БД + */"Информация о приюте для кошек: ")
+        telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), getQuestion(4L))
             .replyMarkup(new InlineKeyboardMarkup(new InlineKeyboardButton[][]
-                {{new InlineKeyboardButton("Информация о приюте для кошек").callbackData("catShelterAbout")},
-                 {new InlineKeyboardButton("Время работы, адрес, схема проезда - приют для кошек").callbackData("catSheduleScheme")},
-                 {new InlineKeyboardButton("Контакты для оформления пропуска").callbackData("catPass")},
-                 {new InlineKeyboardButton("ТБ на территории приюта для кошек").callbackData("callPrevention")},
-                 {new InlineKeyboardButton("Принять и записать ваши контактные данные для связи").callbackData("callClientContacts")},
-                 {new InlineKeyboardButton("Позвать волонтера").callbackData("callVolunteer")}})));
+                {{new InlineKeyboardButton(cat_emoji + getQuestion(8L)  + question_emoji).callbackData("catShelterAbout")},
+                 {new InlineKeyboardButton(cat_emoji + getQuestion(9L)  + question_emoji).callbackData("catSheduleScheme")},
+                 {new InlineKeyboardButton(cat_emoji + getQuestion(10L) + question_emoji).callbackData("catPass")},
+                 {new InlineKeyboardButton(cat_emoji + getQuestion(12L) + pencil_emoji).callbackData("callClientContacts")},
+                 {new InlineKeyboardButton(cat_emoji + getQuestion(7L)  + man_emoji).callbackData("callVolunteer")}})));
     }
 
     private void catAdopt(Update update) {
         telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), /*Приветствие из БД + */"Как взять кошку из приюта: ")
             .replyMarkup(new InlineKeyboardMarkup(new InlineKeyboardButton[][]
-                {{new InlineKeyboardButton("Правила знакомства с кошкой до того, как забрать её из приюта").callbackData("catRules")},
-                 {new InlineKeyboardButton("Документы, необходимые, чтобы взять кошку из приюта").callbackData("catDocs")},
-                 {new InlineKeyboardButton("Рекомендации по транспортировке кошки").callbackData("catRecsTransportation")},
-                 {new InlineKeyboardButton("Рекомендации по обустройству дома для котенка").callbackData("catRecsHomeKitty")},
-                 {new InlineKeyboardButton("Рекомендации по обустройству дома для взрослой кошки").callbackData("catRecsHomeAdult")},
-                 {new InlineKeyboardButton("Рекомендации по обустройству дома для кошки с ограниченными возможностями").callbackData("catRecsDisabled")},
-                 {new InlineKeyboardButton("Список причин отказа в заборе кошки из приюта").callbackData("catRejectionReasons")},
-                 {new InlineKeyboardButton("Принять и записать ваши контактные данные для связи").callbackData("catClientContacts")},
-                 {new InlineKeyboardButton("Позвать волонтера").callbackData("callVolunteer")}})));
+                {{new InlineKeyboardButton(cat_emoji + getQuestion(14L)  + question_emoji).callbackData("catRules")},
+                 {new InlineKeyboardButton(cat_emoji + getQuestion(15L)  + question_emoji).callbackData("catDocs")},
+                 {new InlineKeyboardButton(cat_emoji + getQuestion(16L)  + question_emoji ).callbackData("catRecsTransportation")},
+                 {new InlineKeyboardButton(cat_emoji + getQuestion(17L)  + question_emoji).callbackData("catRecsHomeKitty")},
+                 {new InlineKeyboardButton(cat_emoji + getQuestion(18L)  + question_emoji).callbackData("catRecsHomeAdult")},
+                 {new InlineKeyboardButton(cat_emoji + getQuestion(19L)  + question_emoji).callbackData("catRecsDisabled")},
+                 {new InlineKeyboardButton(cat_emoji + getQuestion(22L)  + question_emoji).callbackData("catRejectionReasons")},
+                 {new InlineKeyboardButton(cat_emoji + getQuestion(23L)  + pencil_emoji).callbackData("catClientContacts")},
+                 {new InlineKeyboardButton(cat_emoji + getQuestion(7L) + man_emoji ).callbackData("callVolunteer")}})));
     }
 
     private void catReport(Update update) {
@@ -185,39 +187,38 @@ public class UpdateListener implements UpdatesListener {
     }
 
     private void dogShelter(Update update) {
-        telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), /*Приветствие из БД + */"Приют для собак: ")
+        telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), /*Приветствие из БД + */ getQuestion(3L) )
             .replyMarkup(new InlineKeyboardMarkup(new InlineKeyboardButton[][]
-                {{new InlineKeyboardButton("Информация о приюте для собак").callbackData("dogShelterInfo")},
-                 {new InlineKeyboardButton("Как взять собаку из приюта").callbackData("dogAdopt")},
-                 {new InlineKeyboardButton("Прислать отчет о собаке").callbackData("dogReport")},
-                 {new InlineKeyboardButton("Позвать волонтера").callbackData("callVolunteer")}})));
+                {{new InlineKeyboardButton(dog_emoji + getQuestion(4L) + question_emoji).callbackData("dogShelterInfo")},
+                 {new InlineKeyboardButton(dog_emoji + getQuestion(5L) + question_emoji).callbackData("dogAdopt")},
+                 {new InlineKeyboardButton(dog_emoji + getQuestion(6L) + pencil_emoji).callbackData("dogReport")},
+                 {new InlineKeyboardButton(dog_emoji + getQuestion(7L) + man_emoji).callbackData("callVolunteer")}})));
     }
 
     private void dogShelterInfo(Update update) {
-        telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), /*Приветствие из БД + */"Информация о приюте для собак: ")
+        telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), dog_emoji + getQuestion(4L))
             .replyMarkup(new InlineKeyboardMarkup(new InlineKeyboardButton[][]
-                {{new InlineKeyboardButton("Информация о приюте для собак").callbackData("dogShelterAbout")},
-                 {new InlineKeyboardButton("Время работы, адрес, схема проезда - приют для собак").callbackData("dogSheduleScheme")},
-                 {new InlineKeyboardButton("Контакты для оформления пропуска").callbackData("dogPass")},
-                 {new InlineKeyboardButton("ТБ на территории приюта для собак").callbackData("dogPrevention")},
-                 {new InlineKeyboardButton("Принять и записать ваши контактные данные для связи").callbackData("dogClientContacts")},
-                 {new InlineKeyboardButton("Позвать волонтера").callbackData("callVolunteer")}})));
+                {{new InlineKeyboardButton(dog_emoji + getQuestion(8L)  + question_emoji).callbackData("dogShelterAbout")},
+                 {new InlineKeyboardButton(dog_emoji + getQuestion(9L)  + question_emoji).callbackData("dogSheduleScheme")},
+                 {new InlineKeyboardButton(dog_emoji + getQuestion(10L) + question_emoji).callbackData("dogPass")},
+                 {new InlineKeyboardButton(dog_emoji + getQuestion(11L) + question_emoji).callbackData("dogPrevention")},
+                 {new InlineKeyboardButton(dog_emoji + getQuestion(12L) + pencil_emoji).callbackData("dogClientContacts")},
+                 {new InlineKeyboardButton(dog_emoji + getQuestion(7L)  + man_emoji).callbackData("callVolunteer")}})));
     }
 
     private void dogAdopt(Update update) {
         telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), /*Приветствие из БД + */"Как взять собаку из приюта: ")
             .replyMarkup(new InlineKeyboardMarkup(new InlineKeyboardButton[][]
-                {{new InlineKeyboardButton("Правила знакомства с собакой до того, как забрать её из приюта").callbackData("dogRules")},
-                 {new InlineKeyboardButton("Документы, необходимые, чтобы взять собаку из приюта").callbackData("dogDocs")},
-                 {new InlineKeyboardButton("Рекомендации по транспортировке собаки").callbackData("dogRecsTransportation")},
-                 {new InlineKeyboardButton("Рекомендации по обустройству дома для щенка").callbackData("dogRecsHomePuppy")},
-                 {new InlineKeyboardButton("Рекомендации по обустройству дома для взрослой собаки").callbackData("dogRecsHomeAdult")},
-                 {new InlineKeyboardButton("Рекомендации по обустройству дома для собаки с ограниченными возможностями").callbackData("dogRecsDisabled")},
-                 {new InlineKeyboardButton("Советы кинолога по первичному общению с собакой").callbackData("dogRecsDisabled")},
-                 {new InlineKeyboardButton("Рекомендации по проверенным кинологам").callbackData("dogRecsDisabled")},
-                 {new InlineKeyboardButton("Список причин отказа в заборе собаки из приюта").callbackData("dogRejectionReasons")},
-                 {new InlineKeyboardButton("Принять и записать ваши контактные данные для связи").callbackData("dogClientContacts")},
-                 {new InlineKeyboardButton("Позвать волонтера").callbackData("callVolunteer")}})));
+                {{new InlineKeyboardButton(dog_emoji + getQuestion(14L)  + question_emoji).callbackData("dogRules")},
+                 {new InlineKeyboardButton(dog_emoji + getQuestion(15L)  + question_emoji).callbackData("dogDocs")},
+                 {new InlineKeyboardButton(dog_emoji + getQuestion(16L)  + question_emoji).callbackData("dogRecsTransportation")},
+                 {new InlineKeyboardButton(dog_emoji + getQuestion(17L)  + question_emoji).callbackData("dogRecsHomePuppy")},
+                 {new InlineKeyboardButton(dog_emoji + getQuestion(18L)  + question_emoji).callbackData("dogRecsHomeAdult")},
+                 {new InlineKeyboardButton(dog_emoji + getQuestion(19L)  + question_emoji).callbackData("dogRecsDisabled")},
+                 {new InlineKeyboardButton(dog_emoji + getQuestion(20L)  + question_emoji).callbackData("dogRecsDisabled")},
+                 {new InlineKeyboardButton(dog_emoji + getQuestion(22L)  + question_emoji).callbackData("dogRecsDisabled")},
+                 {new InlineKeyboardButton(dog_emoji + getQuestion(8L)  + pencil_emoji).callbackData("dogClientContacts")},
+                 {new InlineKeyboardButton(dog_emoji + getQuestion(7L)  + man_emoji).callbackData("callVolunteer")}})));
     }
 
     private void dogReport(Update update) {
@@ -234,5 +235,12 @@ public class UpdateListener implements UpdatesListener {
 //                        {???.callbackData("???")}});
 //        messageText.replyMarkup(inlineKeyboard);
 //        telegramBot.execute(messageText);
+    }
+    private String getQuestion(Long number) {
+        return questionRepository.getQuestionById(number).getTextQuestion();
+    }
+    private String getParent(Long number) {
+        Long parent = questionRepository.getParentById(number);
+        return questionRepository.getQuestionById(parent).getTextQuestion();
     }
 }
