@@ -66,7 +66,7 @@ public class UpdateListener implements UpdatesListener {
                         .parseMode(ParseMode.HTML)
                         .replyMarkup(new InlineKeyboardMarkup(new InlineKeyboardButton[][]
                                 {{new InlineKeyboardButton(getQuestion(2L) + cat_emoji).callbackData("catShelter")},
-                                        {new InlineKeyboardButton(getQuestion(3L)  + dog_emoji).callbackData("dogShelter")}})));
+                                 {new InlineKeyboardButton(getQuestion(3L)  + dog_emoji).callbackData("dogShelter")}})));
             }
         } catch (NullPointerException e) {
             logger.info("Exception: {}", e + " in startMethod");
@@ -243,4 +243,6 @@ public class UpdateListener implements UpdatesListener {
         Long parent = questionRepository.getParentById(number);
         return questionRepository.getQuestionById(parent).getTextQuestion();
     }
+
+
 }
