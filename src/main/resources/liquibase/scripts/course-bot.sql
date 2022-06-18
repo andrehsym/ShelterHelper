@@ -86,3 +86,23 @@ CREATE TABLE pets_photos
     media_type varchar(255),
     id_pet bigint
 );
+
+-- changeSet igor: 3
+CREATE TABLE reports
+(
+    id_report   bigint NOT NULL PRIMARY KEY,
+    date date NOT NULL,
+    text_report varchar(900),
+    is_accepted boolean default false,
+    id bigint NOT NULL
+);
+
+-- changeSet igor: 4
+CREATE TABLE report_photos
+(
+    id_photo   bigint NOT NULL PRIMARY KEY,
+    data oid,
+    file_size bigint,
+    media_type varchar(255),
+    id_report bigint
+);
