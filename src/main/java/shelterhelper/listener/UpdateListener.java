@@ -107,42 +107,42 @@ public class UpdateListener implements UpdatesListener {
             case "dogReport":
                 dogReport(update);
                 break;
-            case "dogSheduleScheme":
-                dogSheduleScheme(update);
-                break;
-            case "dogPass":
-                dogPass(update);
-                break;
-            case "dogPrevention":
-                dogPrevention(update);
-                break;
-            case "dogRulesDating":
-                dogRulesDating(update);
-                break;
-            case "dogDocs":
-                dogDocs(update);
-                break;
-            case "dogRecsTransportation":
-                dogRecsTransportation(update);
-                break;
-            case "dogRecsHomePuppy":
-                dogRecsHomePuppy(update);
-                break;
-            case "dogRecsHomeAdult":
-                dogRecsHomeAdult(update);
-                break;
-            case "dogRecsHomeDisbled":
-                dogRecsHomeDisbled(update);
-                break;
-            case "dogRejectionReasons":
-                dogRejectionReasons(update);
-                break;
-            case "dogCinologistAdvice":
-                dogCinologistAdvice(update);
-                break;
-            case "dogRecsCinologist":
-                dogRecsCinologist(update);
-                break;
+//            case "dogSheduleScheme":
+//                dogSheduleScheme(update);
+//                break;
+//            case "dogPass":
+//                dogPass(update);
+//                break;
+//            case "dogPrevention":
+//                dogPrevention(update);
+//                break;
+//            case "dogRulesDating":
+//                dogRulesDating(update);
+//                break;
+//            case "dogDocs":
+//                dogDocs(update);
+//                break;
+//            case "dogRecsTransportation":
+//                dogRecsTransportation(update);
+//                break;
+//            case "dogRecsHomePuppy":
+//                dogRecsHomePuppy(update);
+//                break;
+//            case "dogRecsHomeAdult":
+//                dogRecsHomeAdult(update);
+//                break;
+//            case "dogRecsHomeDisbled":
+//                dogRecsHomeDisbled(update);
+//                break;
+//            case "dogRejectionReasons":
+//                dogRejectionReasons(update);
+//                break;
+//            case "dogCinologistAdvice":
+//                dogCinologistAdvice(update);
+//                break;
+//            case "dogRecsCinologist":
+//                dogRecsCinologist(update);
+//                break;
         }
     }
 
@@ -160,36 +160,36 @@ public class UpdateListener implements UpdatesListener {
             case "catReport":
                 catReport(update);
                 break;
-            case "catSheduleScheme":
-                catSheduleScheme(update);
-                break;
-            case "catPass":
-                catPass(update);
-                break;
-            case "catPrevention":
-                catPrevention(update);
-                break;
-            case "catRulesDating":
-                catRulesDating(update);
-                break;
-            case "catDocs":
-                catDocs(update);
-                break;
-            case "catRecsTransportation":
-                catRecsTransportation(update);
-                break;
-            case "catRecsHomeKitty":
-                catRecsHomeKitty(update);
-                break;
-            case "catRecsHomeAdult":
-                catRecsHomeAdult(update);
-                break;
-            case "catRecsHomeDisbled":
-                catRecsHomeDisbled(update);
-                break;
-            case "catRejectionReasons":
-                catRejectionReasons(update);
-                break;
+//            case "catSheduleScheme":
+//                catSheduleScheme(update);
+//                break;
+//            case "catPass":
+//                catPass(update);
+//                break;
+//            case "catPrevention":
+//                catPrevention(update);
+//                break;
+//            case "catRulesDating":
+//                catRulesDating(update);
+//                break;
+//            case "catDocs":
+//                catDocs(update);
+//                break;
+//            case "catRecsTransportation":
+//                catRecsTransportation(update);
+//                break;
+//            case "catRecsHomeKitty":
+//                catRecsHomeKitty(update);
+//                break;
+//            case "catRecsHomeAdult":
+//                catRecsHomeAdult(update);
+//                break;
+//            case "catRecsHomeDisbled":
+//                catRecsHomeDisbled(update);
+//                break;
+//            case "catRejectionReasons":
+//                catRejectionReasons(update);
+//                break;
         }
     }
 
@@ -272,13 +272,6 @@ public class UpdateListener implements UpdatesListener {
         //Дальше обработка действий клиента при отправке отчета о кошке. Если отослал фото - проверка и
         // просьба отослать информацию о здоровье, питании и изменениях поведения
         // + напоминалка
-
-        //кнопки -->
-//        InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup(
-//                new InlineKeyboardButton[][]{{???.callbackData("???")},
-//                        {???.callbackData("???")}});
-//        messageText.replyMarkup(inlineKeyboard);
-//        telegramBot.execute(messageText);
     }
 
     private void dogShelter(Update update) {
@@ -323,13 +316,6 @@ public class UpdateListener implements UpdatesListener {
         //Дальше обработка действий клиента при отправке отчета о собаке. Если отослал фото - проверка и
         // просьба отослать информацию о здоровье, питании и изменениях поведения
         // + напоминалка
-
-        //кнопки -->
-//        InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup(
-//                new InlineKeyboardButton[][]{{???.callbackData("???")},
-//                        {???.callbackData("???")}});
-//        messageText.replyMarkup(inlineKeyboard);
-//        telegramBot.execute(messageText);
     }
     private String getQuestion(Long number) {
         return questionRepository.getQuestionById(number).getTextQuestion();
@@ -338,22 +324,4 @@ public class UpdateListener implements UpdatesListener {
         Long parent = questionRepository.getParentById(number);
         return questionRepository.getQuestionById(parent).getTextQuestion();
     }
-
-    //пользовательские кнопки
-    private void replyKeyboard(Update update) {
-        SendMessage messsage = new SendMessage(update.callbackQuery().from().id(), null);
-        Keyboard keyboard = new ReplyKeyboardMarkup(
-            new KeyboardButton[][]
-                {{new KeyboardButton("Позвать волонтера"),
-                  new KeyboardButton("Записать контакты")},
-                  {new KeyboardButton("Вернуться в главное меню")}}
-        );
-//        Keyboard replyKeyboardMarkup = new ReplyKeyboardMarkup(
-//                new String[]{"Позвать волонтера", "Записать контакты"},
-//                new String[]{"Вернуться в главное меню"})
-//                .oneTimeKeyboard(true)   // optional
-//                .resizeKeyboard(true);
-        telegramBot.execute(messsage.replyMarkup(keyboard));
-    }
-
 }
