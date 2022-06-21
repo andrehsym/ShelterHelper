@@ -34,7 +34,7 @@ public class ReportPhotosController {
      * Для тестирования - загрузка фотографии питомца с указанием идентификатора отчета, к
      * которому эта фотография относится.
      */
-    @PostMapping(value = "/photo/{idReport}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/photos/{idReport}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadReportPhoto(@PathVariable Long idReport,
                                                  @RequestParam MultipartFile reportPhoto) throws IOException {
         reportPhotosService.uploadReportPhoto(idReport, reportPhoto);
