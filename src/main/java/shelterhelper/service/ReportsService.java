@@ -32,14 +32,11 @@ public class ReportsService {
         this.adopterPetsRepository = adopterPetsRepository;
     }
 
-       public List<Reports> findAllReportsByDateBetween(LocalDate date1, LocalDate date2){
-           return reportsRepository.findAllByDateReportIsBetween(date1, date2);
-       }
     /**
      * Добавление отчета.
      * Отчет можно добавить только по существующему усыновителю!
-     * @param report экземпляр
-     * @return экземпляр класса
+     * @param report отчет
+     * @return добавленный отчет
      */
     public Reports addReport(Reports report) {
         AdoptedPets adoptedPets = adopterPetsRepository.findById(report.getAdoptedPets().getId())
@@ -48,33 +45,66 @@ public class ReportsService {
         return reportsRepository.save(report);
     }
 
-    public List<Reports> findAllReportsByDate(LocalDate date){
-        return reportsRepository.findAllByDateReport(date);
-    }
-
-    public List findAllReportsByDateWithPhoto(LocalDate date) {
+//    public List<Reports> findAllReportsByDate(LocalDate date){
+//        return reportsRepository.findAllByDateReport(date);
+//    }
+    /**
+     * Находит все отчеты на указанную дату с указанием
+     * всех idPhoto по каждому отчету. Информация по каждому отчету
+     * выводится отдельной строкой, отформатированной для читабельности.
+     * @param date дата
+     * @return List<String>
+     */
+    public List<String> findAllReportsByDateWithPhoto(LocalDate date) {
         List<Reports> reports = reportsRepository.findAllByDateReport(date);
         if (reports.size() == 0) {
-            Throwable throwable = new IdNotFoundException("Отчетов нет");
+            Throwable throwable = new IdNotFoundException("Отчетов нет на эту дату");
         }
-        String descriptionReport;
-        ArrayList<String> reportsList = new ArrayList<>();
-        List<ReportPhotos> photos = new ArrayList<>();
+        ArrayList<String> reportsTransform = new ArrayList<>();
         for (Reports report : reports) {
-            photos = reportPhotosRepository.findAllByReports_IdReport(report.getIdReport());
-            ArrayList<Long> idPhotoList = new ArrayList<>();
-            for (ReportPhotos photo : photos) {
-                idPhotoList.add(photo.getIdPhoto());
-            }
-            descriptionReport = "idReport=" + report.getIdReport()
-                    + ", dateReport=" + report.getDateReport()
-                    + ", idUser=" + report.getAdoptedPets().getIdUser()
-                    + ", idPet=" + report.getAdoptedPets().getIdPet()
-                    + report.getAdoptedPets().getIdEntity().getTextEntity()
-                    + ", isAccepted=" + report.isAccepted() + ", textReport: " + report.getTextReport()
-                    + ", idPhotos:" + idPhotoList;
-            reportsList.add(descriptionReport);
+            reportsTransform.add(transformReportToString(report));
         }
-        return reportsList;
+        return reportsTransform;
+    }
+
+    public List<Reports> findAllReportsByDateBetween(LocalDate date1, LocalDate date2){
+        return reportsRepository.findAllByDateReportIsBetween(date1, date2);
+    }
+
+    /**
+     * Получает список значений idPhoto всех фотографий,
+     * которые принадлежат данному отчету.
+     * @param report отчет
+     * @return List - список значений idPhoto
+     */
+    public List getAllIdPhotoByReport(Reports report) {
+        List<ReportPhotos> photos = reportPhotosRepository.findAllByReports_IdReport(report.getIdReport());
+        ArrayList<Long> idPhotoList = new ArrayList<>();
+        for (ReportPhotos photo : photos) {
+            idPhotoList.add(photo.getIdPhoto());
+        }
+        return idPhotoList;
+    }
+
+    /**
+     * Трансформация отчета в строку с изменениями и дополнениями для читабельности.
+     * @param report отчет
+     * @return String - отчет в виде строки
+     */
+    public String transformReportToString(Reports report) {
+        int numberOfCharacters = 10;
+        if (report.getTextReport().length() < 12) {
+            numberOfCharacters = report.getTextReport().length();
+        }
+        String descriptionReport = "<idReport>= " + report.getIdReport()
+                + ", <dateReport>= " + report.getDateReport()
+                + ", <idUser>= " + report.getAdoptedPets().getIdUser()
+                + ", <idPet>= " + report.getAdoptedPets().getIdPet()
+                + " " + report.getAdoptedPets().getIdEntity().getTextEntity()
+                + ", <isAccepted>= " + report.isAccepted()
+                + ", <textReport>: '" + report.getTextReport().substring(0, numberOfCharacters)
+                + "...', <idPhotos>:" + getAllIdPhotoByReport(report);
+
+        return descriptionReport;
     }
 }
