@@ -45,9 +45,6 @@ public class ReportsService {
         return reportsRepository.save(report);
     }
 
-//    public List<Reports> findAllReportsByDate(LocalDate date){
-//        return reportsRepository.findAllByDateReport(date);
-//    }
     /**
      * Находит все отчеты на указанную дату с указанием
      * всех idPhoto по каждому отчету. Информация по каждому отчету
@@ -57,18 +54,29 @@ public class ReportsService {
      */
     public List<String> findAllReportsByDateWithPhoto(LocalDate date) {
         List<Reports> reports = reportsRepository.findAllByDateReport(date);
-        if (reports.size() == 0) {
-            Throwable throwable = new IdNotFoundException("Отчетов нет на эту дату");
-        }
-        ArrayList<String> reportsTransform = new ArrayList<>();
-        for (Reports report : reports) {
-            reportsTransform.add(transformReportToString(report));
-        }
-        return reportsTransform;
+        return transformListReportsToStrings(reports);
     }
 
-    public List<Reports> findAllReportsByDateBetween(LocalDate date1, LocalDate date2){
-        return reportsRepository.findAllByDateReportIsBetween(date1, date2);
+    /**
+     * Находит все отчеты, поступившие от указанного усыновителя,
+     * с указанием всех idPhoto по каждому отчету. Информация по каждому отчету
+     * выводится отдельной строкой, отформатированной для читабельности.
+     * @param idUser дата
+     * @return List<String>
+     */
+    public List<String> findAllReportsByUserWithPhoto(Long idUser) {
+        List<Reports> reports = reportsRepository.findAllByAdoptedPets_IdUser(idUser);
+        return transformListReportsToStrings(reports);
+    }
+
+    public List<String> findAllReportsByPetWithPhoto(Long idPet) {
+        List<Reports> reports = reportsRepository.findAllByAdoptedPets_IdPet(idPet);
+        return transformListReportsToStrings(reports);
+    }
+
+    public List<String> findAllReportsByDateBetweenWithPhoto(LocalDate date1, LocalDate date2){
+        List<Reports> reports = reportsRepository.findAllByDateReportIsBetween(date1, date2);
+        return transformListReportsToStrings(reports);
     }
 
     /**
@@ -106,5 +114,30 @@ public class ReportsService {
                 + "...', <idPhotos>:" + getAllIdPhotoByReport(report);
 
         return descriptionReport;
+    }
+
+    /**
+     * Преобразование списка отчетов в список отформатированных
+     * строк для читабельности.
+     * @param reports отчет
+     * @return String - отчет в виде строки
+     */
+    public List<String> transformListReportsToStrings(List<Reports> reports) {
+        if (reports.size() == 0) {
+            Throwable throwable = new IdNotFoundException("Отчетов по данному запросу не найдено");
+        }
+        ArrayList<String> reportsTransform = new ArrayList<>();
+        for (Reports report : reports) {
+            reportsTransform.add(transformReportToString(report));
+        }
+        return reportsTransform;
+    }
+
+    public List<Reports> findAllReportsByDate(LocalDate date){
+        return reportsRepository.findAllByDateReport(date);
+    }
+
+    public List<Reports> findAllReportsByDateBetween(LocalDate date1, LocalDate date2){
+        return reportsRepository.findAllByDateReportIsBetween(date1, date2);
     }
 }
