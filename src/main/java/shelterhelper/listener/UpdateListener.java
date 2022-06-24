@@ -162,6 +162,10 @@ public class UpdateListener implements UpdatesListener {
     private void checkingCall(Update update) {
         switch (update.callbackQuery().data()) {
             case "callClientContacts":
+                telegramBot.execute(new SendMessage(update.message().chat().id(), "Введите контакт в формате" +
+                        "\nЭлектронная почта и номер телефона, начинающийся с цифры 8 без пробелов/скобок/тире." +
+                        "\nНапример:" +
+                        "\nmariya@yandex.ru 89991116655"));
                 contacts.callClientContacts(update);
                 break;
             case "callVolunteer":
