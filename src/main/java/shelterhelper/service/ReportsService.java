@@ -15,7 +15,6 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 
 @Service
 @Transactional
@@ -33,8 +32,8 @@ public class ReportsService {
     }
 
     /**
-     * Добавление отчета.
-     * Отчет можно добавить только по существующему усыновителю!
+     * Добавление или изменение отчета.
+     * Отчет можно добавить или изменить только по существующему усыновителю!
      * @param report отчет
      * @return добавленный отчет
      */
@@ -79,6 +78,36 @@ public class ReportsService {
         return transformListReportsToStrings(reports);
     }
 
+    public String findReportByIdReport(Long idReport) {
+        Reports report = reportsRepository.findById(idReport).orElseThrow(()->new IdNotFoundException
+                ("Отчет с таким id: " + idReport + " не найден"));
+        return transformReportToString(report, false);
+    }
+
+    public String findReportByDateAndIdUser(LocalDate date, Long idUser) {
+        Reports report = reportsRepository.findReportByDateReportAndAdoptedPetsIdUser(date, idUser);
+        return transformReportToString(report, false);
+    }
+
+    public String findReportByDateAndIdPet(LocalDate date, Long idPet) {
+        Reports report = reportsRepository.findReportByDateReportAndAdoptedPetsIdPet(date, idPet);
+        return transformReportToString(report, false);
+    }
+
+    public void deleteAll() {
+        reportsRepository.deleteAll();
+    }
+
+    public void deleteById(Long idReport) {
+        reportsRepository.deleteById(idReport);
+    }
+
+    public ReportPhotos findReportPhotoById(Long idPhoto) {
+       ReportPhotos photo = reportPhotosRepository.findById(idPhoto).orElseThrow(()->new IdNotFoundException
+               ("Фотография с таким id: " + idPhoto + " не найдена"));
+       return photo;
+    }
+
     /**
      * Получает список значений idPhoto всех фотографий,
      * которые принадлежат данному отчету.
@@ -95,13 +124,17 @@ public class ReportsService {
     }
 
     /**
-     * Трансформация отчета в строку с изменениями и дополнениями для читабельности.
+     * Трансформация отчета в строку с изменениями и дополнениями
+     * для читабельности. Вывод текста отчета (text-report) может быть ограничено
+     * количеством знаков или нет, это указывается в параметре textLimit.
+     * Для работы с конкретным отчетом надо использовать другой запрос.
      * @param report отчет
+     * @param textLimit ограничение текста отчета - да или нет
      * @return String - отчет в виде строки
      */
-    public String transformReportToString(Reports report) {
+    public String transformReportToString(Reports report, boolean textLimit) {
         int numberOfCharacters = 10;
-        if (report.getTextReport().length() < 12) {
+        if (report.getTextReport().length() < 12 | !textLimit)  {
             numberOfCharacters = report.getTextReport().length();
         }
         String descriptionReport = "<idReport>= " + report.getIdReport()
@@ -128,7 +161,7 @@ public class ReportsService {
         }
         ArrayList<String> reportsTransform = new ArrayList<>();
         for (Reports report : reports) {
-            reportsTransform.add(transformReportToString(report));
+            reportsTransform.add(transformReportToString(report, true));
         }
         return reportsTransform;
     }

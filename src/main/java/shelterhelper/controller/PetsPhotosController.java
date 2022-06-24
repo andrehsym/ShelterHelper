@@ -105,13 +105,16 @@ public class PetsPhotosController {
      * идентификатор фото (idPhoto), тогда удаляется одна фотография с указанным id
      */
     @DeleteMapping("/delete")
-    public ResponseEntity<ShelterPetsPhotos> delete(@RequestParam Long idPhoto,
+    public ResponseEntity<ShelterPetsPhotos> delete(@RequestParam(required = false) Long idPhoto,
                                                     @RequestParam(required = false) boolean all) {
         if (all) {
             petsPhotosService.deleteAll();
             return ok().build();
         }
-        petsPhotosService.deletePhoto(idPhoto);
-        return ok().build();
+        if (idPhoto != null) {
+            petsPhotosService.deletePhoto(idPhoto);
+            return ok().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }

@@ -224,7 +224,7 @@ public class UpdateListener implements UpdatesListener {
             newbie.setStamp(stamp);
             newbie.setPhoneUser(phoneNumber);
             newbie.setEmailUser(email);
-            shelterClientRepository.save(newbie); //создать репозиторий ShelterClient
+//            shelterClientRepository.save(newbie); //создать репозиторий ShelterClient
             telegramBot.execute(new SendMessage(update.message().chat().id(), "Ваши контакты для связи переданы"));
         } catch (IllegalStateException e) {
             telegramBot.execute(new SendMessage(update.message().chat().id(), "Неправильный формат"));;
