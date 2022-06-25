@@ -1,17 +1,16 @@
 package shelterhelper.service;
 
 import org.springframework.stereotype.Service;
-import shelterhelper.model.Answer;
+import shelterhelper.repository.AnswerRepository;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class AnswerServiceImpl implements AnswerService {
-    private final ShelterAnswerService shelterAnswerService;
+    private final AnswerRepository answerRepository;
 
-    public AnswerServiceImpl(ShelterAnswerService shelterAnswerService) {
-        this.shelterAnswerService = shelterAnswerService;
+    public AnswerServiceImpl(AnswerRepository answerRepository) {
+        this.answerRepository = answerRepository;
     }
 
     /**
@@ -21,11 +20,7 @@ public class AnswerServiceImpl implements AnswerService {
      */
     @Override
     public String getAnswer(Long id_question) {
-        List<Answer> answers = shelterAnswerService.getAnswersByQuestion(id_question);
-        StringBuilder textAnswer = null;
-        for (Answer item : answers) {
-            textAnswer.append(item.getTextAnswer());
-        }
-        return Objects.requireNonNull(textAnswer).toString();
+        List<String> answers = answerRepository.getAnswerForQuestion(id_question);
+        return answers.toString();
     }
 }

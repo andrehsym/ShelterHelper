@@ -5,5 +5,5 @@ package shelterhelper.service;
  * Есть номер вопроса - получть текст ответа
  */
 public interface AnswerService {
-    String getAnswer(Long id_question);
+    String getAnswer(Long id);
 }
