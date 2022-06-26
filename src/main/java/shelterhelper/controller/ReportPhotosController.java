@@ -34,7 +34,7 @@ public class ReportPhotosController {
      * Для тестирования - загрузка фотографии питомца с указанием идентификатора отчета, к
      * которому эта фотография относится.
      */
-    @PostMapping(value = "/photo/{idReport}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/photos/{idReport}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadReportPhoto(@PathVariable Long idReport,
                                                  @RequestParam MultipartFile reportPhoto) throws IOException {
         reportPhotosService.uploadReportPhoto(idReport, reportPhoto);
@@ -62,13 +62,16 @@ public class ReportPhotosController {
      * идентификатор фото (idPhoto), тогда удаляется одна фотография с указанным id
      */
     @DeleteMapping("/photo-delete")
-    public ResponseEntity<ReportPhotos> delete(@RequestParam Long idPhoto,
+    public ResponseEntity<ReportPhotos> delete(@RequestParam(required = false) Long idPhoto,
                                                     @RequestParam(required = false) boolean all) {
         if (all) {
             reportPhotosService.deleteAll();
             return ok().build();
         }
-        reportPhotosService.deletePhoto(idPhoto);
-        return ok().build();
+        if (idPhoto != null) {
+            reportPhotosService.deletePhoto(idPhoto);
+            return ok().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }
