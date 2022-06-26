@@ -62,13 +62,16 @@ public class ReportPhotosController {
      * идентификатор фото (idPhoto), тогда удаляется одна фотография с указанным id
      */
     @DeleteMapping("/photo-delete")
-    public ResponseEntity<ReportPhotos> delete(@RequestParam Long idPhoto,
+    public ResponseEntity<ReportPhotos> delete(@RequestParam(required = false) Long idPhoto,
                                                     @RequestParam(required = false) boolean all) {
         if (all) {
             reportPhotosService.deleteAll();
             return ok().build();
         }
-        reportPhotosService.deletePhoto(idPhoto);
-        return ok().build();
+        if (idPhoto != null) {
+            reportPhotosService.deletePhoto(idPhoto);
+            return ok().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }
