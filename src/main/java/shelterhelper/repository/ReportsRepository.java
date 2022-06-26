@@ -10,6 +10,10 @@ public interface ReportsRepository extends JpaRepository<Reports, Long> {
 
     List<Reports> findAllByDateReportIsBetween(LocalDate date1, LocalDate date2);
 
+    Reports findReportByDateReportAndAdoptedPetsIdUser(LocalDate date, Long idUser);
+
+    Reports findReportByDateReportAndAdoptedPetsIdPet(LocalDate date, Long idPet);
+
     List<Reports> findAllByDateReport(LocalDate date);
 
     List<Reports> findAllByAdoptedPets_IdUser(Long idUser);
