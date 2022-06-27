@@ -15,6 +15,8 @@ import shelterhelper.service.Contacts;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static shelterhelper.model.Constants.*;
 
@@ -75,6 +77,10 @@ public class UpdateListener implements UpdatesListener {
                         .replyMarkup(new InlineKeyboardMarkup(new InlineKeyboardButton[][]
                                 {{new InlineKeyboardButton(getQuestion(2L) + cat_emoji).callbackData("catShelter")},
                                  {new InlineKeyboardButton(getQuestion(3L) + dog_emoji).callbackData("dogShelter")}})));
+            } else if (!update.message().text().contains("@")) {
+                telegramBot.execute(new SendMessage(update.message().chat().id(), "Введите команду /start"));
+            } else {
+                contacts.callClientContacts(update);
             }
         } catch (NullPointerException e) {
             logger.info("Exception: {}", e + " in startMethod");
@@ -88,7 +94,7 @@ public class UpdateListener implements UpdatesListener {
             } else {
                 checkingCallbackQueryPet(update);
             }
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             logger.info("Exception: {}", e + " in checkingCallbackQuery method");
         }
     }
@@ -158,10 +164,13 @@ public class UpdateListener implements UpdatesListener {
         }
     }
 
-
     private void checkingCall(Update update) {
         switch (update.callbackQuery().data()) {
             case "callClientContacts":
+                telegramBot.execute(new SendMessage(update.callbackQuery().message().chat().id(), "Введите контакт в формате" +
+                        "\nЭлектронная почта и номер телефона, начинающийся с цифры 8 без пробелов/скобок/тире." +
+                        "\nНапример:" +
+                        "\nmariya@yandex.ru 89991116655"));
                 contacts.callClientContacts(update);
                 break;
             case "callVolunteer":
@@ -170,20 +179,20 @@ public class UpdateListener implements UpdatesListener {
         }
     }
 
-    private void callVolunteer(Update update) { //создать метод для вызова волонтера
+    private void callVolunteer(Update update) {
 
     }
 
     private void catShelter(Update update) {
         telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), getQuestion(2L))
                 .replyMarkup(new InlineKeyboardMarkup(new InlineKeyboardButton[][]
-                               {{new InlineKeyboardButton(cat_emoji + getQuestion(4L) + question_emoji).callbackData("petShelterInfo")},
+                        {{new InlineKeyboardButton(cat_emoji + getQuestion(4L) + question_emoji).callbackData("petShelterInfo")},
                                 {new InlineKeyboardButton(cat_emoji + getQuestion(5L) + question_emoji).callbackData("catAdopt")},
                                 {new InlineKeyboardButton(cat_emoji + getQuestion(6L) + pencil_emoji).callbackData("petReport")},
                                 {new InlineKeyboardButton(cat_emoji + getQuestion(7L) + man_emoji).callbackData("callVolunteer")}})));
     }
 
-    private void catAdopt(Update update) { //ЭТАП 2
+    private void catAdopt(Update update) {
         telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), getQuestion(5L) + cat_emoji)
                 .replyMarkup(new InlineKeyboardMarkup(new InlineKeyboardButton[][]
                         {{new InlineKeyboardButton(cat_emoji + getQuestion(14L) + question_emoji).callbackData("petRules")},
@@ -200,16 +209,16 @@ public class UpdateListener implements UpdatesListener {
     private void dogShelter(Update update) {
         telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), /*Приветствие из БД + */ getQuestion(3L))
                 .replyMarkup(new InlineKeyboardMarkup(new InlineKeyboardButton[][]
-                               {{new InlineKeyboardButton(dog_emoji + getQuestion(4L) + question_emoji).callbackData("petShelterInfo")},
+                        {{new InlineKeyboardButton(dog_emoji + getQuestion(4L) + question_emoji).callbackData("petShelterInfo")},
                                 {new InlineKeyboardButton(dog_emoji + getQuestion(5L) + question_emoji).callbackData("dogAdopt")},
                                 {new InlineKeyboardButton(dog_emoji + getQuestion(6L) + pencil_emoji).callbackData("petReport")},
                                 {new InlineKeyboardButton(dog_emoji + getQuestion(7L) + man_emoji).callbackData("callVolunteer")}})));
     }
 
-    private void petShelterInfo(Update update, String emoji) { //ЭТАП 1
+    private void petShelterInfo(Update update, String emoji) {
         telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),emoji + getQuestion(4L))
                 .replyMarkup(new InlineKeyboardMarkup(new InlineKeyboardButton[][]
-                               {{new InlineKeyboardButton(emoji + getQuestion(8L)  + question_emoji).callbackData("petShelterAbout")},
+                        {{new InlineKeyboardButton(emoji + getQuestion(8L)  + question_emoji).callbackData("petShelterAbout")},
                                 {new InlineKeyboardButton(emoji + getQuestion(9L)  + question_emoji).callbackData("petScheduleScheme")},
                                 {new InlineKeyboardButton(emoji + getQuestion(10L) + question_emoji).callbackData("petPass")},
                                 {new InlineKeyboardButton(emoji + getQuestion(11L) + question_emoji).callbackData("petPrevention")},
@@ -217,10 +226,10 @@ public class UpdateListener implements UpdatesListener {
                                 {new InlineKeyboardButton(emoji + getQuestion(7L)  + man_emoji).callbackData("callVolunteer")}})));
     }
 
-    private void dogAdopt(Update update) { //ЭТАП 2
+    private void dogAdopt(Update update) {
         telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), getQuestion(5L) + dog_emoji)
                 .replyMarkup(new InlineKeyboardMarkup(new InlineKeyboardButton[][]
-                               {{new InlineKeyboardButton(dog_emoji + getQuestion(14L) + question_emoji).callbackData("petRules")},
+                        {{new InlineKeyboardButton(dog_emoji + getQuestion(14L) + question_emoji).callbackData("petRules")},
                                 {new InlineKeyboardButton(dog_emoji + getQuestion(15L) + question_emoji).callbackData("petDocs")},
                                 {new InlineKeyboardButton(dog_emoji + getQuestion(16L) + question_emoji).callbackData("petRecsTransportation")},
                                 {new InlineKeyboardButton(dog_emoji + getQuestion(17L) + question_emoji).callbackData("petRecsHomePuppy")},
@@ -233,13 +242,8 @@ public class UpdateListener implements UpdatesListener {
                                 {new InlineKeyboardButton(dog_emoji + getQuestion(7L) + man_emoji).callbackData("callVolunteer")}})));
     }
 
-    private void petReport(Update update, String emoji) { //ЭТАП 3
-        SendMessage messageText = new SendMessage(update.message().chat().id(), "Ведение питомца:").parseMode(ParseMode.HTML);
-        InlineKeyboardButton dogFormReportInfo = new InlineKeyboardButton("Форма ежедневного отчета ");
-        InlineKeyboardButton dogSendPhoto = new InlineKeyboardButton("Прислать фото" + emoji);
-        //Дальше обработка действий клиента при отправке отчета о собаке. Если отослал фото - проверка и
-        // просьба отослать информацию о здоровье, питании и изменениях поведения
-        // + напоминалка
+    private void petReport(Update update, String emoji) {
+
     }
 
     private String getQuestion(Long number) {
