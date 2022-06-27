@@ -25,7 +25,6 @@ public class ContactsImpl implements Contacts{
 
     @Override
     public void callClientContacts(Update update) {
-
         Pattern pattern = Pattern.compile(PHONE_PATTERN);
         Matcher matcher = pattern.matcher(update.message().text());
         try {

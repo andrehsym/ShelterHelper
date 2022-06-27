@@ -15,6 +15,8 @@ import shelterhelper.service.Contacts;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static shelterhelper.model.Constants.*;
 
@@ -54,11 +56,13 @@ public class UpdateListener implements UpdatesListener {
     public int process(List<Update> updates) {
         updates.forEach(update -> {
             logger.info("Processing update: {}", update);
-            if (update.message() != null && update.message().text() != null) {
-                startMethod(update);
-            } else {
-                checkingCallbackQuery(update);
-            }
+//            if (update.message() != null && update.message().text() != null) {
+//                    startMethod(update);
+//            } else {
+//                checkingCallbackQuery(update);
+//            }
+            startMethod(update);
+            checkingCallbackQuery(update);
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
@@ -72,14 +76,16 @@ public class UpdateListener implements UpdatesListener {
 
     private void startMethod(Update update) {
         try {
-            if (update.message().text().equals("/start")) {
-                telegramBot.execute(new SendMessage(update.message().chat().id(), getQuestion(1L) + "\nВыберите приют: ")
-                        .parseMode(ParseMode.HTML)
-                        .replyMarkup(new InlineKeyboardMarkup(new InlineKeyboardButton[][]
-                                {{new InlineKeyboardButton(getQuestion(2L) + cat_emoji).callbackData("catShelter")},
-                                        {new InlineKeyboardButton(getQuestion(3L) + dog_emoji).callbackData("dogShelter")}})));
-            } else {
+            Pattern pattern = Pattern.compile(PHONE_PATTERN);
+            Matcher matcher = pattern.matcher(update.message().text());
+            if (matcher.matches()) {
                 contacts.callClientContacts(update);
+            } else {
+                telegramBot.execute(new SendMessage(update.message().chat().id(), getQuestion(1L) + "\nВыберите приют: ")
+                    .parseMode(ParseMode.HTML)
+                    .replyMarkup(new InlineKeyboardMarkup(new InlineKeyboardButton[][]
+                        {{new InlineKeyboardButton(getQuestion(2L) + cat_emoji).callbackData("catShelter")},
+                         {new InlineKeyboardButton(getQuestion(3L) + dog_emoji).callbackData("dogShelter")}})));
             }
         } catch (NullPointerException e) {
             logger.info("Exception: {}", e + " in startMethod");
@@ -93,7 +99,7 @@ public class UpdateListener implements UpdatesListener {
             } else {
                 checkingCallbackQueryPet(update);
             }
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             logger.info("Exception: {}", e + " in checkingCallbackQuery method");
         }
     }
@@ -162,7 +168,6 @@ public class UpdateListener implements UpdatesListener {
                 break;
         }
     }
-
 
     private void checkingCall(Update update) {
         switch (update.callbackQuery().data()) {
