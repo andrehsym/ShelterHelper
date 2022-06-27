@@ -56,11 +56,6 @@ public class UpdateListener implements UpdatesListener {
     public int process(List<Update> updates) {
         updates.forEach(update -> {
             logger.info("Processing update: {}", update);
-//            if (update.message() != null && update.message().text() != null) {
-//                    startMethod(update);
-//            } else {
-//                checkingCallbackQuery(update);
-//            }
             startMethod(update);
             checkingCallbackQuery(update);
         });
@@ -76,16 +71,16 @@ public class UpdateListener implements UpdatesListener {
 
     private void startMethod(Update update) {
         try {
-            Pattern pattern = Pattern.compile(PHONE_PATTERN);
-            Matcher matcher = pattern.matcher(update.message().text());
-            if (matcher.matches()) {
-                contacts.callClientContacts(update);
-            } else {
+            if (update.message().text().equals("/start")) {
                 telegramBot.execute(new SendMessage(update.message().chat().id(), getQuestion(1L) + "\nВыберите приют: ")
-                    .parseMode(ParseMode.HTML)
-                    .replyMarkup(new InlineKeyboardMarkup(new InlineKeyboardButton[][]
-                        {{new InlineKeyboardButton(getQuestion(2L) + cat_emoji).callbackData("catShelter")},
-                         {new InlineKeyboardButton(getQuestion(3L) + dog_emoji).callbackData("dogShelter")}})));
+                        .parseMode(ParseMode.HTML)
+                        .replyMarkup(new InlineKeyboardMarkup(new InlineKeyboardButton[][]
+                                {{new InlineKeyboardButton(getQuestion(2L) + cat_emoji).callbackData("catShelter")},
+                                 {new InlineKeyboardButton(getQuestion(3L) + dog_emoji).callbackData("dogShelter")}})));
+            } else if (!update.message().text().contains("@")) {
+                telegramBot.execute(new SendMessage(update.message().chat().id(), "Введите команду /start"));
+            } else {
+                contacts.callClientContacts(update);
             }
         } catch (NullPointerException e) {
             logger.info("Exception: {}", e + " in startMethod");
